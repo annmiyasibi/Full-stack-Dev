@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="An interactive classroom demonstration page for CSS Media Queries, Viewport Breakpoints, and Responsive Design.">
+  <title>Interactive Lecture: CSS Media Queries &amp; Breakpoints</title>
+
+  <!-- Google Fonts for professional typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       CSS RESET & DESIGN SYSTEM TOKENS
+       ========================================================= */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Colors */
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --dark-slate: #0f172a;
+      --slate-600: #475569;
+      --slate-400: #94a3b8;
+      --border-color: #e2e8f0;
+      --code-bg: #1e293b;
+      
+      /* Transitions */
+      --transition-fast: 0.2s ease;
+      --transition-normal: 0.4s ease;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      /* Default Desktop Background: Soft warm grey-blue */
+      background-color: #f8fafc;
+      color: var(--dark-slate);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color var(--transition-normal);
+      line-height: 1.5;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* =========================================================
+       LIVE SCREEN-SIZE INDICATOR BADGE
+       ========================================================= */
+    #screen-label {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 10px 18px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      /* Default Desktop Color */
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+      transition: all var(--transition-normal);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    #screen-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #screen-icon svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.5;
+    }
+
+    /* =========================================================
+       HEADER & NAVIGATION
+       ========================================================= */
+    header {
+      background: #0f172a;
+      color: #fff;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 72px;
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo span {
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      padding: 6px 0;
+      position: relative;
+      transition: color var(--transition-fast);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: #60a5fa;
+      transition: width var(--transition-fast);
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Hamburger Menu Button (3 Clean Lines) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 1000;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: #f8fafc;
+      border-radius: 2px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Hamburger Animation to 'X' */
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Mobile Drawer */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: #1e293b;
+      padding: 1rem 2rem 1.5rem;
+      gap: 1rem;
+      list-style: none;
+      border-top: 1px solid #334155;
+    }
+
+    .mobile-menu.show {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      font-weight: 500;
+      font-size: 1rem;
+      color: #cbd5e1;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* =========================================================
+       HERO / PRESENTATION HEADER
+       ========================================================= */
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #1e293b, #475569);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--slate-600);
+      line-height: 1.6;
+    }
+
+    /* =========================================================
+       MAIN LECTURE CONTENT (3 CARDS)
+       ========================================================= */
+    .lecture-section {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1rem 2rem 3rem;
+    }
+
+    .cards-container {
+      display: flex;
+      gap: 1.75rem;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      flex: 1 1 0;
+      min-width: 0;
+      background: #fff;
+      border-radius: 16px;
+      padding: 2.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+    }
+
+    /* Accent color lines on cards */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+    }
+
+    .card:nth-child(1)::before { background: #3b82f6; }
+    .card:nth-child(2)::before { background: #8b5cf6; }
+    .card:nth-child(3)::before { background: #ec4899; }
+
+    /* SVG Icon Container */
+    .icon-container {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .card:nth-child(1) .icon-container { background: #eff6ff; color: #3b82f6; }
+    .card:nth-child(2) .icon-container { background: #f5f3ff; color: #8b5cf6; }
+    .card:nth-child(3) .icon-container { background: #fdf2f8; color: #ec4899; }
+
+    .card h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--dark-slate);
+    }
+
+    .card p {
+      font-size: 0.975rem;
+      color: var(--slate-600);
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+    }
+
+    .card ul {
+      list-style-type: none;
+    }
+
+    .card li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.925rem;
+      color: var(--slate-600);
+    }
+
+    .card li::before {
+      content: "➔";
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+    
+    .card:nth-child(1) li::before { color: #3b82f6; }
+    .card:nth-child(2) li::before { color: #8b5cf6; }
+    .card:nth-child(3) li::before { color: #ec4899; }
+
+    /* Mini code badges inside cards */
+    .code-badge {
+      font-family: 'Fira Code', monospace;
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* =========================================================
+       LIVE CSS INSPECTOR CODE BLOCKS SECTION
+       ========================================================= */
+    .inspector-section {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    .inspector-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .code-blocks-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      color: #f8fafc;
+      border-radius: 12px;
+      padding: 1.5rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      border: 2px solid transparent;
+      opacity: 0.4;
+      transition: all var(--transition-normal);
+      position: relative;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+
+    .code-block pre {
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+
+    /* Code Highlighting Colors */
+    .keyword { color: #f472b6; }  /* @media */
+    .type { color: #38bdf8; }     /* screen, max-width */
+    .val { color: #fbbf24; }      /* 1024px, #ede9fe */
+    .comment { color: #64748b; font-style: italic; }
+
+    /* Custom active label added dynamically via CSS */
+    .code-block::after {
+      content: '● INACTIVE';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--slate-400);
+      letter-spacing: 0.5px;
+    }
+
+    /* Default active layout states (Desktop) */
+    #cb-desktop {
+      opacity: 1;
+      border-color: #3b82f6;
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    }
+    #cb-desktop::after {
+      content: '● ACTIVE NOW';
+      background: rgba(59, 130, 246, 0.2);
+      color: #60a5fa;
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      text-align: center;
+      padding: 2rem;
+      margin-top: auto;
+      border-top: 1px solid #1e293b;
+      font-size: 0.9rem;
+    }
+
+    footer span {
+      color: #60a5fa;
+      font-weight: 600;
+    }
+
+
+    /* =========================================================
+       MEDIA QUERIES - BREAKPOINT 1: TABLET (max-width: 1024px)
+       ========================================================= */
+    @media (max-width: 1024px) {
+      
+      /* 1. Visible style change */
+      body {
+        background-color: #f5f3ff; /* Lavender */
+      }
+
+      /* 2. Floating Indicator adjustment */
+      #screen-label {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+      }
+
+      /* 3. Hero styling */
+      .hero h1 {
+        font-size: 2.25rem;
+      }
+
+      /* 4. Flexible cards reflow: 2 columns */
+      .cards-container {
+        gap: 1.5rem;
+      }
+
+      .card {
+        flex: 1 1 calc(50% - 1.5rem);
+      }
+
+      /* Stretch the last card across the width */
+      .card:nth-child(3) {
+        flex: 1 1 100%;
+      }
+
+      /* 5. Update Active Code Block Highlights in Real-Time */
+      #cb-desktop {
+        opacity: 0.4;
+        border-color: transparent;
+        box-shadow: none;
+      }
+      #cb-desktop::after {
+        content: '● INACTIVE';
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--slate-400);
+      }
+
+      #cb-tablet {
+        opacity: 1;
+        border-color: #8b5cf6;
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+      }
+      #cb-tablet::after {
+        content: '● ACTIVE NOW';
+        background: rgba(139, 92, 246, 0.2);
+        color: #a78bfa;
+      }
+    }
+
+
+    /* =========================================================
+       MEDIA QUERIES - BREAKPOINT 2: MOBILE (max-width: 768px)
+       ========================================================= */
+    @media (max-width: 768px) {
+      
+      /* 1. Visible style change */
+      body {
+        background-color: #fdf2f8; /* Pale Pink */
+      }
+
+      /* 2. Floating Indicator adjustment */
+      #screen-label {
+        background: linear-gradient(135deg, #ec4899, #db2777);
+        box-shadow: 0 4px 20px rgba(236, 72, 153, 0.3);
+      }
+
+      /* 3. Show Navigation Hamburger Menu */
+      .hamburger {
+        display: flex;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      /* 4. Hero text size */
+      .hero {
+        padding: 3rem 1.5rem 1.5rem;
+      }
+
+      .hero h1 {
+        font-size: 1.85rem;
+      }
+
+      /* 5. Flexible cards reflow: 1 column stack */
+      .lecture-section {
+        padding: 1rem 1.25rem 2.5rem;
+      }
+
+      .cards-container {
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .card {
+        flex: 1 1 100%;
+        padding: 1.75rem;
+      }
+
+      /* 6. Code Inspector Layout adjustments */
+      .inspector-section {
+        padding: 0 1.25rem 3rem;
+      }
+
+      .code-blocks-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+
+      /* 7. Update Active Code Block Highlights in Real-Time */
+      #cb-desktop, #cb-tablet {
+        opacity: 0.4;
+        border-color: transparent;
+        box-shadow: none;
+      }
+      #cb-desktop::after, #cb-tablet::after {
+        content: '● INACTIVE';
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--slate-400);
+      }
+
+      #cb-mobile {
+        opacity: 1;
+        border-color: #ec4899;
+        box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);
+      }
+      #cb-mobile::after {
+        content: '● ACTIVE NOW';
+        background: rgba(236, 72, 153, 0.2);
+        color: #f472b6;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==================== LIVE SCREEN STATE INDICATOR ==================== -->
+  <div id="screen-label">
+    <span id="screen-icon"></span>
+    <span id="screen-text">Desktop View</span>
+  </div>
+
+  <!-- ==================== HEADER / NAVBAR ==================== -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #60a5fa;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        Responsive<span>Lecture</span>
+      </div>
+
+      <!-- Desktop Navigation Menu -->
+      <ul class="nav-links">
+        <li><a href="#syntax">1. Syntax</a></li>
+        <li><a href="#breakpoints">2. Breakpoints</a></li>
+        <li><a href="#strategies">3. Strategies</a></li>
+        <li><a href="#sandbox">Live CSS Inspector</a></li>
+      </ul>
+
+      <!-- Hamburger button (3 Clean Lines) -->
+      <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation drawer">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <ul class="mobile-menu" id="mobile-menu">
+      <li><a href="#syntax">1. Syntax</a></li>
+      <li><a href="#breakpoints">2. Breakpoints</a></li>
+      <li><a href="#strategies">3. Strategies</a></li>
+      <li><a href="#sandbox">Live CSS Inspector</a></li>
+    </ul>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="hero">
+    <h1>CSS Media Queries &amp; Breakpoints</h1>
+    <p>
+      An interactive dashboard designed for live classroom teaching. 
+      Resize this window to watch the layout reflow, color themes shift, and the active CSS rules light up automatically.
+    </p>
+  </section>
+
+  <!-- ==================== LECTURE SECTION (3 CARDS) ==================== -->
+  <section class="lecture-section">
+    <div class="cards-container">
+
+      <!-- Card 1: Core Syntax -->
+      <div class="card" id="syntax">
+        <div class="icon-container">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+        </div>
+        <h2>1. The Media Query</h2>
+        <p>
+          Media queries use the <span class="code-badge">@media</span> rule to apply block styles based on specific hardware features.
+        </p>
+        <ul>
+          <li><strong>Media Types:</strong> Target devices directly using keywords like <span class="code-badge">screen</span> or <span class="code-badge">print</span>.</li>
+          <li><strong>Media Features:</strong> Query conditions such as <span class="code-badge">width</span>, <span class="code-badge">orientation</span>, or resolution.</li>
+          <li><strong>Operators:</strong> Combine multiple logic rules using <span class="code-badge">and</span>, <span class="code-badge">not</span>, and <span class="code-badge">only</span>.</li>
+        </ul>
+      </div>
+
+      <!-- Card 2: Viewport Breakpoints -->
+      <div class="card" id="breakpoints">
+        <div class="icon-container">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="12" rx="2" ry="2"></rect>
+            <line x1="2" y1="20" x2="22" y2="20"></line>
+            <line x1="12" y1="16" x2="12" y2="20"></line>
+          </svg>
+        </div>
+        <h2>2. Choosing Breakpoints</h2>
+        <p>
+          Breakpoints are the screen width thresholds where the layout transitions to fit content comfortably.
+        </p>
+        <ul>
+          <li><strong>Mobile Threshold:</strong> Under <span class="code-badge">768px</span>. Optimizes single column layouts for thumbs.</li>
+          <li><strong>Tablet Range:</strong> Between <span class="code-badge">768px</span> and <span class="code-badge">1024px</span>. Typically handles split column grids.</li>
+          <li><strong>Desktop Base:</strong> Over <span class="code-badge">1024px</span>. Utilizes wide multi-column navigation layouts.</li>
+        </ul>
+      </div>
+
+      <!-- Card 3: Strategies -->
+      <div class="card" id="strategies">
+        <div class="icon-container">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+          </svg>
+        </div>
+        <h2>3. Mobile-First Approach</h2>
+        <p>
+          Modern responsive engineering structures styles to prioritize performance on mobile screens first.
+        </p>
+        <ul>
+          <li><strong>Mobile First:</strong> CSS is written cleanly for mobile first; then <span class="code-badge">min-width</span> queries add desktop layout extensions.</li>
+          <li><strong>Desktop First:</strong> Desktop layout defaults; then <span class="code-badge">max-width</span> overrides scale elements down.</li>
+          <li><strong>Benefits:</strong> Reduces browser computation and ensures page load performance.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== LIVE CODE INSPECTOR SECTION ==================== -->
+  <section class="inspector-section" id="sandbox">
+    <h2 class="inspector-title">Live CSS Breakpoint Inspector</h2>
+    <div class="code-blocks-grid">
+      
+      <!-- Desktop Code Block -->
+      <div class="code-block" id="cb-desktop">
+        <pre><span class="keyword">@media</span> (min-width: <span class="val">1025px</span>) {
+  <span class="comment">/* Desktop Styles */</span>
+  <span class="type">body</span> {
+    background-color: <span class="val">#f8fafc</span>;
+  }
+  <span class="type">.cards-container</span> {
+    flex-wrap: nowrap;
+  }
+}</pre>
+      </div>
+
+      <!-- Tablet Code Block -->
+      <div class="code-block" id="cb-tablet">
+        <pre><span class="keyword">@media</span> (max-width: <span class="val">1024px</span>) {
+  <span class="comment">/* Tablet Styles */</span>
+  <span class="type">body</span> {
+    background-color: <span class="val">#f5f3ff</span>;
+  }
+  <span class="type">.card</span> {
+    flex: <span class="val">1 1 calc(50% - 1.5rem)</span>;
+  }
+}</pre>
+      </div>
+
+      <!-- Mobile Code Block -->
+      <div class="code-block" id="cb-mobile">
+        <pre><span class="keyword">@media</span> (max-width: <span class="val">768px</span>) {
+  <span class="comment">/* Mobile Styles */</span>
+  <span class="type">body</span> {
+    background-color: <span class="val">#fdf2f8</span>;
+  }
+  <span class="type">.cards-container</span> {
+    flex-direction: <span class="val">column</span>;
+  }
+}</pre>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer>
+    <p>Interactive Teaching Template &copy; 2026 <span>ResponsiveLecture</span>. Ready for slide-decks and projector screens.</p>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    /* ==========================================================
+       1. HAMBURGER TOGGLE MENU
+       ========================================================== */
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const mobileMenu   = document.getElementById('mobile-menu');
+
+    hamburgerBtn.addEventListener('click', () => {
+      hamburgerBtn.classList.toggle('active');
+      mobileMenu.classList.toggle('show');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburgerBtn.classList.remove('active');
+        mobileMenu.classList.remove('show');
+      });
+    });
+
+    /* ==========================================================
+       2. REAL-TIME LABEL UPDATER WITH SVG ICONS
+       ========================================================== */
+    const screenIcon = document.getElementById('screen-icon');
+    const screenText = document.getElementById('screen-text');
+    const mqTablet   = window.matchMedia('(max-width: 1024px)');
+    const mqMobile   = window.matchMedia('(max-width: 768px)');
+
+    // SVG icons definitions
+    const desktopSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>`;
+    const tabletSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>`;
+    const mobileSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>`;
+
+    function updateIndicator() {
+      if (mqMobile.matches) {
+        screenIcon.innerHTML = mobileSvg;
+        screenText.textContent = 'Mobile View';
+      } else if (mqTablet.matches) {
+        screenIcon.innerHTML = tabletSvg;
+        screenText.textContent = 'Tablet View';
+      } else {
+        screenIcon.innerHTML = desktopSvg;
+        screenText.textContent = 'Desktop View';
+      }
+    }
+
+    // Run on init and dynamic resize
+    updateIndicator();
+    mqTablet.addEventListener('change', updateIndicator);
+    mqMobile.addEventListener('change', updateIndicator);
+  </script>
+
+</body>
+</html>
