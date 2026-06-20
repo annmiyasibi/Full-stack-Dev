@@ -1,0 +1,2187 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Mission Tracker | Department of Computer Science | CHRIST</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        christ: {
+                            blue: '#2957A4',
+                            gold: '#D2AE6D',
+                            dark: '#201E1E',
+                            lightBg: '#F8FAFC',
+                            hoverBlue: '#1E4072'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2957A4;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-christ-dark font-sans antialiased">
+
+
+    <div class="bg-christ-gold text-christ-dark py-2 px-4 text-center text-xs font-bold tracking-wider uppercase">
+        🎓 Department of Computer Science - Peer-to-Peer Student Mentoring Initiative
+    </div>
+
+
+    <header
+        class="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+
+                <a href="#" class="flex flex-col">
+                    <span class="text-xl font-extrabold tracking-tight text-christ-blue">Digital Mission</span>
+                    <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">CHRIST (Deemed to be
+                        University)</span>
+                </a>
+
+                <nav class="hidden lg:flex items-center gap-6 text-sm font-semibold">
+                    <a href="#about" class="text-slate-600 hover:text-christ-blue transition-colors">About</a>
+                    <a href="#departments"
+                        class="text-slate-600 hover:text-christ-blue transition-colors">Departments</a>
+                    <a href="#dashboard" class="text-slate-600 hover:text-christ-blue transition-colors">Dashboard</a>
+                    <a href="#testimonials"
+                        class="text-slate-600 hover:text-christ-blue transition-colors">Testimonials</a>
+                </nav>
+
+                <!-- Navigation buttons (Desk/Laptop) -->
+                <div class="hidden lg:flex items-center gap-3">
+                    <button onclick="openModal()"
+                        class="text-christ-blue border border-christ-blue/30 hover:bg-slate-50 px-3.5 py-2 rounded-xl font-bold text-xs transition-all active:scale-95">
+                        Request Session
+                    </button>
+                    <button onclick="openTrainerModal()"
+                        class="text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3.5 py-2 rounded-xl font-bold text-xs transition-all active:scale-95">
+                        Register as Trainer
+                    </button>
+                    <button id="auth-header-btn" onclick="openLoginModal()"
+                        class="bg-christ-blue hover:bg-christ-hoverBlue text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-md active:scale-95 flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 01-3-3h7a3 3 0 013 3v1">
+                            </path>
+                        </svg>
+                        <span>Sign In</span>
+                    </button>
+                </div>
+
+                <button id="mobile-menu-btn"
+                    class="lg:hidden p-2 text-slate-600 hover:text-christ-blue focus:outline-none flex items-center gap-2">
+                    <!-- Notification Badge on Mobile if active -->
+                    <span id="mobile-badge" class="hidden w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu"
+            class="hidden lg:hidden bg-white border-t border-slate-200 py-4 px-6 space-y-3 shadow-inner">
+            <a href="#about" class="block text-slate-700 font-semibold hover:text-christ-blue"
+                onclick="toggleMobileMenu()">About</a>
+            <a href="#departments" class="block text-slate-700 font-semibold hover:text-christ-blue"
+                onclick="toggleMobileMenu()">Departments</a>
+            <a href="#dashboard" class="block text-slate-700 font-semibold hover:text-christ-blue"
+                onclick="toggleMobileMenu()">Dashboard</a>
+            <a href="#testimonials" class="block text-slate-700 font-semibold hover:text-christ-blue"
+                onclick="toggleMobileMenu()">Testimonials</a>
+            <div class="pt-2 flex flex-col gap-2">
+                <button onclick="openModal(); toggleMobileMenu();"
+                    class="w-full text-christ-blue border border-christ-blue/30 py-2 rounded-lg font-bold text-xs shadow-sm">
+                    Request Session
+                </button>
+                <button onclick="openTrainerModal(); toggleMobileMenu();"
+                    class="w-full text-amber-800 bg-amber-50 border border-amber-250 py-2 rounded-lg font-bold text-xs shadow-sm">
+                    Register as Trainer
+                </button>
+                <button id="auth-mobile-btn" onclick="openLoginModal(); toggleMobileMenu();"
+                    class="w-full bg-christ-blue text-white py-2 rounded-lg font-bold text-xs shadow">
+                    Sign In
+                </button>
+            </div>
+        </div>
+    </header>
+
+
+    <section class="relative bg-christ-lightBg py-16 lg:py-24 overflow-hidden border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div
+                        class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100 border border-blue-200 text-christ-blue text-xs font-bold uppercase tracking-wider">
+                        🙌 Peer Mentoring: "By the Students, For the Students"
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-christ-dark leading-tight">
+                        Bridging Skill Gaps through <span class="text-christ-blue">Student Mentorship</span>
+                    </h1>
+                    <p class="text-base sm:text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        A peer-to-peer training framework connecting postgraduate computer science mentors with fellow
+                        university students to foster essential digital skills, Canva design, Python scripting, and AI
+                        tools.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <button onclick="openModal()"
+                            class="bg-christ-blue hover:bg-christ-hoverBlue text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-blue-900/10 hover:scale-[1.02] active:scale-95">
+                            Launch Live Tracker
+                        </button>
+                        <a href="#about"
+                            class="bg-white hover:bg-slate-100 text-christ-blue border border-slate-200 px-8 py-3.5 rounded-xl font-bold transition-all flex items-center justify-center">
+                            Explore Curriculum
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="lg:col-span-5">
+                    <div
+                        class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-white group hover:scale-[1.01] transition-all duration-300">
+                        <img src="images/students.jpg" alt="Students working together"
+                            class="w-full h-auto object-cover max-h-[380px]">
+                        <div
+                            class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-christ-blue/95 via-christ-blue/60 to-transparent p-6 text-white">
+                            <span class="text-xs font-bold text-christ-gold tracking-widest uppercase">Department
+                                Mentorship</span>
+                            <h3 class="text-base font-bold">Collaborative Peer-to-Peer Labs</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="bg-christ-blue text-white py-12 border-b border-christ-gold/20 shadow-inner">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="space-y-1">
+                    <div class="text-4xl sm:text-5xl font-black text-christ-gold">3,500+</div>
+                    <p class="text-xs font-semibold text-slate-200 uppercase tracking-wider">Learners Enrolled</p>
+                </div>
+                <div class="space-y-1">
+                    <div class="text-4xl sm:text-5xl font-black text-christ-gold">95%</div>
+                    <p class="text-xs font-semibold text-slate-200 uppercase tracking-wider">Completion Rate</p>
+                </div>
+                <div class="space-y-1">
+                    <div class="text-4xl sm:text-5xl font-black text-christ-gold">2,000+</div>
+                    <p class="text-xs font-semibold text-slate-200 uppercase tracking-wider">Certificates Issued</p>
+                </div>
+                <div class="space-y-1">
+                    <div class="text-4xl sm:text-5xl font-black text-christ-gold">50+</div>
+                    <p class="text-xs font-semibold text-slate-200 uppercase tracking-wider">Certified Trainers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="about" class="py-16 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-christ-gold">About Digital Mission</h2>
+                <h3 class="text-3xl font-extrabold text-christ-dark tracking-tight">Academic Peer Learning Model</h3>
+                <div class="w-12 h-1 bg-christ-blue mx-auto rounded-full"></div>
+                <p class="text-slate-655 text-sm sm:text-base leading-relaxed">
+                    Designed by the Department of Computer Science at CHRIST, the Digital Mission provides technical
+                    skills empowerment. PG/PhD student mentors are trained to deliver workshops to non-computing
+                    scholars, building workspace capability and technological confidence.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div
+                    class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3 hover:shadow-md transition-shadow">
+                    <div
+                        class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-christ-blue font-bold">
+                        L1</div>
+                    <h4 class="font-bold text-lg text-christ-blue">Level 1 - Essentials</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Covers basic tools including Google Workspace collaboration, Canva visual design, and
+                        introductory computing logic to establish baseline digital confidence.
+                    </p>
+                </div>
+
+                <div
+                    class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3 hover:shadow-md transition-shadow">
+                    <div
+                        class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center text-amber-700 font-bold">
+                        L2</div>
+                    <h4 class="font-bold text-lg text-christ-blue">Level 2 - Enterprise</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Deep dive into professional scripting with Python, data modeling, AWS Cloud fundamentals, and
+                        applied generative AI to prepare scholars for placement.
+                    </p>
+                </div>
+
+                <div
+                    class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3 hover:shadow-md transition-shadow">
+                    <div
+                        class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-700 font-bold">
+                        ✓</div>
+                    <h4 class="font-bold text-lg text-christ-blue">Springboard Integration</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Aligned with digital content from partner initiatives like Infosys Springboard. All coursework
+                        culminates in verified student certificates.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section id="departments" class="py-16 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-christ-gold">Department Networks</h2>
+                <h3 class="text-3xl font-extrabold text-christ-dark">Participating School Batches</h3>
+                <p class="text-slate-500 text-sm">We provide tailored mentoring assistance across various academic
+                    departments.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <div
+                    class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-4 flex flex-col justify-between hover:-translate-y-1 transition-all">
+                    <div class="space-y-2">
+                        <div class="text-xs font-bold text-christ-blue uppercase">School of Commerce</div>
+                        <h4 class="font-bold text-base text-christ-dark">B.Com Regular & Hon.</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Focuses on Google Sheets mastery, formulas,
+                            and dashboards development.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 text-[10px] font-bold text-slate-400">
+                        <span>Ongoing Cohort</span>
+                        <span class="text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Level 1</span>
+                    </div>
+                </div>
+
+
+                <div
+                    class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-4 flex flex-col justify-between hover:-translate-y-1 transition-all">
+                    <div class="space-y-2">
+                        <div class="text-xs font-bold text-christ-blue uppercase">School of Sciences</div>
+                        <h4 class="font-bold text-base text-christ-dark">B.Sc Life Sciences</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Focuses on Python programming script setups
+                            and basic clinical data analysis.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 text-[10px] font-bold text-slate-400">
+                        <span>Ongoing Cohort</span>
+                        <span class="text-amber-700 bg-amber-50 px-2 py-0.5 rounded">Level 2</span>
+                    </div>
+                </div>
+
+
+                <div
+                    class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-4 flex flex-col justify-between hover:-translate-y-1 transition-all">
+                    <div class="space-y-2">
+                        <div class="text-xs font-bold text-christ-blue uppercase">School of Arts</div>
+                        <h4 class="font-bold text-base text-christ-dark">B.A. English & Media</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Focuses on Canva layout design, digital
+                            presentation structures, and design guidelines.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 text-[10px] font-bold text-slate-400">
+                        <span>Completed Batch</span>
+                        <span class="text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Level 1</span>
+                    </div>
+                </div>
+
+
+                <div
+                    class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-4 flex flex-col justify-between hover:-translate-y-1 transition-all">
+                    <div class="space-y-2">
+                        <div class="text-xs font-bold text-christ-blue uppercase">School of Business</div>
+                        <h4 class="font-bold text-base text-christ-dark">BBA Tourism & HR</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Focuses on productivity automation tools,
+                            workspace collaboration, and presentation slides.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 text-[10px] font-bold text-slate-400">
+                        <span>Ongoing Cohort</span>
+                        <span class="text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Level 1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dashboard" class="py-16 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-10">
+                <div
+                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-55 border border-blue-200 text-christ-blue text-[10px] font-bold uppercase tracking-wider">
+                    ⚡ Interactive Prototype Demo
+                </div>
+                <h3 class="text-3xl font-extrabold text-christ-dark">Student & Admin Mission Portal</h3>
+                <p class="text-slate-500 text-sm">Select a role below to simulate the system workflow, submit requests,
+                    and watch the administrative matching engine run in real-time.</p>
+            </div>
+
+            <!-- Role Simulator Selectors -->
+            <div class="max-w-md mx-auto mb-8 bg-white border border-slate-200 rounded-2xl p-1.5 flex gap-1 shadow-sm">
+                <button onclick="setSimulationRole('guest')" id="role-btn-guest"
+                    class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 text-christ-blue bg-blue-50">
+                    🏢 Guest/Dept
+                </button>
+                <button onclick="setSimulationRole('volunteer')" id="role-btn-volunteer"
+                    class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 text-slate-500 hover:text-slate-700">
+                    🎓 Student
+                </button>
+                <button onclick="setSimulationRole('admin')" id="role-btn-admin"
+                    class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 text-slate-500 hover:text-slate-700 relative">
+                    ⚙️ Admin Office
+                    <span id="admin-badge-count"
+                        class="absolute -top-1.5 -right-1 bg-red-500 text-white rounded-full text-[9px] w-4.5 h-4.5 flex items-center justify-center font-bold hidden border border-white">0</span>
+                </button>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl shadow-xl max-w-6xl mx-auto overflow-hidden">
+                <!-- Control Panel Header -->
+                <div class="bg-christ-dark text-white px-6 py-4 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-3">
+                        <div class="flex gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-red-500 block"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500 block"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500 block"></span>
+                        </div>
+                        <span id="db-panel-title" class="font-bold tracking-widest text-slate-400 uppercase">DIGITAL
+                            MISSION CONTROL PANEL — GUEST MODE</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] text-slate-400 bg-white/10 px-2 py-0.5 rounded font-mono"
+                            id="active-user-display">guest@christ.edu</span>
+                        <span
+                            class="bg-emerald-500 text-white px-2.5 py-1 rounded-full font-bold uppercase tracking-widest text-[9px] animate-pulse">Live
+                            Database Simulation</span>
+                    </div>
+                </div>
+
+                <!-- Simulation Info Banner -->
+                <div id="sim-banner"
+                    class="bg-blue-50 border-b border-blue-100 text-christ-blue px-6 py-3 text-xs flex items-center gap-2">
+                    <span class="font-bold">💡 How to demo:</span>
+                    <span id="sim-banner-text">You are browsing as a Guest. Click "Request Session" or "Register as
+                        Trainer" above to submit data, then switch to "Admin Office" to match and schedule
+                        classes.</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 min-h-[500px]">
+                    <!-- Sidebar Navigation -->
+                    <div class="md:col-span-3 bg-slate-50 border-r border-slate-200 p-4 space-y-6">
+                        <!-- Navigation Menu based on Role -->
+                        <div class="space-y-1" id="nav-list-container">
+                            <span
+                                class="text-[10px] text-slate-400 font-bold uppercase block tracking-wider mb-2">Workspace
+                                Navigation</span>
+                            <!-- Will be dynamically updated by JS -->
+                        </div>
+
+                        <!-- Active Stats Widget -->
+                        <div class="border border-slate-250/70 rounded-xl p-4 bg-white space-y-3">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase block tracking-wider">Simulation
+                                Stats</span>
+                            <div class="grid grid-cols-2 gap-2 text-center">
+                                <div class="bg-slate-50 p-2 rounded-lg">
+                                    <div class="text-sm font-black text-christ-blue" id="stat-total-requests">3</div>
+                                    <div class="text-[9px] font-bold text-slate-400 uppercase">Requests</div>
+                                </div>
+                                <div class="bg-slate-50 p-2 rounded-lg">
+                                    <div class="text-sm font-black text-christ-gold" id="stat-total-trainers">4</div>
+                                    <div class="text-[9px] font-bold text-slate-400 uppercase">Trainers</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Dynamic Area -->
+                    <div class="md:col-span-9 p-6 sm:p-8 space-y-6 overflow-y-auto max-h-[600px]"
+                        id="dashboard-main-content">
+                        <!-- Dashboard content will be injected here by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="testimonials" class="py-16 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-christ-blue">Feedback</h2>
+                <h3 class="text-3xl font-extrabold text-christ-dark">Learner and Faculty Reviews</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+
+                <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col justify-between">
+                    <p class="text-xs text-slate-500 italic leading-relaxed">
+                        "The student mentors made advanced Python data analysis look so simple. My B.Sc Biotechnology
+                        students loved the hands-on lab sessions and gained high confidence."
+                    </p>
+                    <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-xs text-christ-blue">
+                            DK</div>
+                        <div>
+                            <h5 class="text-xs font-bold text-christ-dark">Dr. Karen D'Souza</h5>
+                            <p class="text-[10px] text-slate-400">Faculty Coordinator, Life Sciences</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col justify-between">
+                    <p class="text-xs text-slate-500 italic leading-relaxed">
+                        "As a Commerce student, spreadsheets used to be confusing. The MCA mentors guided us through
+                        building filters and tracking dashboard designs step-by-step."
+                    </p>
+                    <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-xs text-christ-blue">
+                            AS</div>
+                        <div>
+                            <h5 class="text-xs font-bold text-christ-dark">Amit Sharma</h5>
+                            <p class="text-[10px] text-slate-400">1st Year B.Com (Regular)</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col justify-between">
+                    <p class="text-xs text-slate-500 italic leading-relaxed">
+                        "Becoming a certified trainer gave me practical leadership experience. It's rewarding to see
+                        non-computing students build functional logic scripts."
+                    </p>
+                    <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-xs text-christ-blue">
+                            RJ</div>
+                        <div>
+                            <h5 class="text-xs font-bold text-christ-dark">Rohan Joseph</h5>
+                            <p class="text-[10px] text-slate-400">MCA Student & Peer Mentor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="py-16 bg-christ-blue text-white text-center">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-christ-gold">Register Interest</h2>
+            <h3 class="text-3xl font-black">Bring Digital Mission to Your Department</h3>
+            <p class="text-slate-250 text-sm max-w-xl mx-auto leading-relaxed">
+                Faculty members can request digital skills training cohorts for their batches, and CS scholars can
+                register to become certified mentors.
+            </p>
+            <div class="pt-2 flex justify-center gap-4">
+                <button onclick="openModal()"
+                    class="bg-christ-gold hover:bg-yellow-600 text-christ-dark px-7 py-3 rounded-xl font-bold text-sm transition-all shadow-md">
+                    Request Session Program
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="bg-christ-dark text-slate-400 py-12 text-xs sm:text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center md:text-left">
+                <div>
+                    <h4 class="text-white font-extrabold text-base">Digital Mission Tracker</h4>
+                    <p class="text-xs text-slate-500">Department of Computer Science, CHRIST (Deemed to be University)
+                    </p>
+                </div>
+
+                <div class="text-slate-300">
+                    <p class="font-semibold text-white">Central Campus Address</p>
+                    <p>Hosur Road, Bengaluru, Karnataka, India - 560029</p>
+                </div>
+
+                <div class="space-y-2 md:text-right">
+                    <div class="flex justify-center md:justify-end gap-4 font-semibold text-slate-350">
+                        <a href="#about" class="hover:text-white transition-colors">About</a>
+                        <a href="#departments" class="hover:text-white transition-colors">Departments</a>
+                        <a href="#dashboard" class="hover:text-white transition-colors">Dashboard</a>
+                    </div>
+                    <p class="text-xs text-slate-655">&copy; 2026 Department of Computer Science, CHRIST. All rights
+                        reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <div id="tracker-modal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="flex items-start justify-center min-h-screen p-4 py-8 text-center">
+            <div
+                class="relative bg-white rounded-2xl text-left overflow-hidden shadow-2xl max-w-lg w-full border border-slate-200">
+
+                <!-- Header -->
+                <div class="px-6 pt-6 pb-4 border-b border-slate-100 bg-gradient-to-r from-christ-blue to-[#1E4072]">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div
+                                class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/15 text-[10px] font-bold text-white/90 uppercase tracking-wider mb-2">
+                                📋 Session Request Form</div>
+                            <h3 class="text-lg font-extrabold text-white" id="modal-title">Request Training Session</h3>
+                            <p class="text-xs text-blue-200 mt-0.5">Submit a session request from your department to
+                                admin</p>
+                        </div>
+                        <button onclick="closeModal()" class="text-white/60 hover:text-white p-1 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Step Indicator -->
+                    <div class="flex items-center gap-2 mt-4">
+                        <div id="step-ind-1" class="flex-1 h-1 rounded-full bg-christ-gold transition-all"></div>
+                        <div id="step-ind-2" class="flex-1 h-1 rounded-full bg-white/20 transition-all"></div>
+                        <div id="step-ind-3" class="flex-1 h-1 rounded-full bg-white/20 transition-all"></div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form id="session-request-form" novalidate class="max-h-[65vh] overflow-y-auto">
+
+                    <!-- Step 1: Department & Class Info -->
+                    <div id="form-step-1" class="p-6 space-y-4">
+                        <h4 class="text-xs font-bold text-christ-blue uppercase tracking-wider flex items-center gap-2">
+                            <span
+                                class="w-5 h-5 rounded-full bg-christ-blue text-white flex items-center justify-center text-[10px] font-black">1</span>
+                            Department & Class Details
+                        </h4>
+
+                        <div>
+                            <label for="req-department"
+                                class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Department / School
+                                <span class="text-red-500">*</span></label>
+                            <select id="req-department" required
+                                class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none transition-colors">
+                                <option value="">— Select Department —</option>
+                                <option value="commerce">School of Commerce</option>
+                                <option value="sciences">School of Sciences</option>
+                                <option value="arts">School of Arts & Humanities</option>
+                                <option value="business">School of Business & Management</option>
+                                <option value="law">School of Law</option>
+                                <option value="engineering">School of Engineering & Technology</option>
+                                <option value="social-sciences">School of Social Sciences</option>
+                                <option value="education">School of Education</option>
+                            </select>
+                            <p id="err-department" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Please
+                                select a department</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="req-classname"
+                                    class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Class Name <span
+                                        class="text-red-500">*</span></label>
+                                <input id="req-classname" type="text" required placeholder="e.g. 1 B.Com Regular"
+                                    class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none transition-colors">
+                                <p id="err-classname" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Class
+                                    name is required</p>
+                            </div>
+                            <div>
+                                <label for="req-section"
+                                    class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Section <span
+                                        class="text-red-500">*</span></label>
+                                <input id="req-section" type="text" required placeholder="e.g. A / B / C" maxlength="5"
+                                    class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none transition-colors">
+                                <p id="err-section" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Section
+                                    is required</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="req-location"
+                                class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Classroom Location <span
+                                    class="text-red-500">*</span></label>
+                            <input id="req-location" type="text" required placeholder="e.g. Block III, Room 402"
+                                class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none transition-colors">
+                            <p id="err-location" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Classroom
+                                location is required</p>
+                        </div>
+
+                        <div class="pt-3 flex justify-end">
+                            <button type="button" onclick="goToStep(2)"
+                                class="px-5 py-2.5 rounded-lg bg-christ-blue hover:bg-christ-hoverBlue text-xs font-bold text-white shadow-sm transition-all active:scale-95 flex items-center gap-1.5">Next
+                                Step <span>→</span></button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: CR & Session Info -->
+                    <div id="form-step-2" class="p-6 space-y-4 hidden">
+                        <h4 class="text-xs font-bold text-christ-blue uppercase tracking-wider flex items-center gap-2">
+                            <span
+                                class="w-5 h-5 rounded-full bg-christ-blue text-white flex items-center justify-center text-[10px] font-black">2</span>
+                            Class Representative & Session
+                        </h4>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="req-crname"
+                                    class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Class CR Name <span
+                                        class="text-red-500">*</span></label>
+                                <input id="req-crname" type="text" required placeholder="e.g. Priya Sharma"
+                                    class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none transition-colors">
+                                <p id="err-crname" class="text-red-500 text-[10px] font-semibold mt-1 hidden">CR name is
+                                    required</p>
+                            </div>
+                            <div>
+                                <label for="req-crcontact"
+                                    class="block text-xs font-bold text-slate-500 uppercase mb-1.5">CR Contact No. <span
+                                        class="text-red-500">*</span></label>
+                                <input id="req-crcontact" type="tel" required placeholder="+91 98765 43210"
+                                    pattern="[\+]?[0-9\s]{10,15}"
+                                    class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none transition-colors">
+                                <p id="err-crcontact" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Enter a
+                                    valid 10-digit phone number</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Session Level <span
+                                    class="text-red-500">*</span></label>
+                            <div class="grid grid-cols-2 gap-3" id="req-level-group">
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="session-level" value="enterprise" class="peer sr-only"
+                                        required>
+                                    <div
+                                        class="border-2 border-slate-200 peer-checked:border-christ-blue peer-checked:bg-blue-50 rounded-xl p-3 transition-all hover:border-slate-300">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span
+                                                class="w-6 h-6 rounded-md bg-amber-50 flex items-center justify-center text-amber-700 text-[10px] font-black">L2</span>
+                                            <span class="text-xs font-bold text-christ-dark">Enterprise Level</span>
+                                        </div>
+                                        <p class="text-[10px] text-slate-400 leading-snug">Python, AWS Cloud, AI Tools,
+                                            Data Modeling</p>
+                                    </div>
+                                </label>
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="session-level" value="essentials" class="peer sr-only"
+                                        required>
+                                    <div
+                                        class="border-2 border-slate-200 peer-checked:border-christ-blue peer-checked:bg-blue-50 rounded-xl p-3 transition-all hover:border-slate-300">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span
+                                                class="w-6 h-6 rounded-md bg-blue-50 flex items-center justify-center text-christ-blue text-[10px] font-black">L1</span>
+                                            <span class="text-xs font-bold text-christ-dark">Essentials Level</span>
+                                        </div>
+                                        <p class="text-[10px] text-slate-400 leading-snug">Google Workspace, Canva,
+                                            Computing Logic</p>
+                                    </div>
+                                </label>
+                            </div>
+                            <p id="err-level" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Please select a
+                                session level</p>
+                        </div>
+
+                        <div>
+                            <label for="req-preferred-date"
+                                class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Preferred Start Date
+                                <span class="text-red-500">*</span></label>
+                            <input id="req-preferred-date" type="date" required
+                                class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none transition-colors">
+                            <p id="err-date" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Please select a
+                                future date</p>
+                        </div>
+
+                        <div class="pt-3 flex justify-between">
+                            <button type="button" onclick="goToStep(1)"
+                                class="px-5 py-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all active:scale-95 flex items-center gap-1.5"><span>←</span>
+                                Back</button>
+                            <button type="button" onclick="goToStep(3)"
+                                class="px-5 py-2.5 rounded-lg bg-christ-blue hover:bg-christ-hoverBlue text-xs font-bold text-white shadow-sm transition-all active:scale-95 flex items-center gap-1.5">Next
+                                Step <span>→</span></button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Timetable Upload & Notes -->
+                    <div id="form-step-3" class="p-6 space-y-4 hidden">
+                        <h4 class="text-xs font-bold text-christ-blue uppercase tracking-wider flex items-center gap-2">
+                            <span
+                                class="w-5 h-5 rounded-full bg-christ-blue text-white flex items-center justify-center text-[10px] font-black">3</span>
+                            Timetable & Additional Info
+                        </h4>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Class Timetable <span
+                                    class="text-red-500">*</span></label>
+                            <div id="upload-dropzone"
+                                class="border-2 border-dashed border-slate-300 hover:border-christ-blue rounded-xl p-5 text-center cursor-pointer transition-all bg-slate-50 hover:bg-blue-50/30 group"
+                                onclick="document.getElementById('req-timetable').click()">
+                                <input id="req-timetable" type="file" accept="image/png,image/jpeg,image/jpg,image/webp"
+                                    class="hidden" onchange="handleFileUpload(this)">
+                                <div id="upload-placeholder">
+                                    <svg class="w-8 h-8 mx-auto text-slate-300 group-hover:text-christ-blue transition-colors mb-2"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                    <p class="text-xs font-semibold text-slate-500">Click to upload timetable image</p>
+                                    <p class="text-[10px] text-slate-400 mt-1">PNG, JPG, or WebP — Max 5 MB</p>
+                                </div>
+                                <div id="upload-preview" class="hidden">
+                                    <img id="preview-img" src="" alt="Timetable Preview"
+                                        class="max-h-32 mx-auto rounded-lg border border-slate-200 shadow-sm">
+                                    <p id="preview-filename" class="text-[10px] text-slate-500 font-semibold mt-2"></p>
+                                    <button type="button" onclick="event.stopPropagation(); removeFile()"
+                                        class="text-[10px] text-red-500 font-bold mt-1 hover:underline">✕
+                                        Remove</button>
+                                </div>
+                            </div>
+                            <p id="err-timetable" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Please
+                                upload a timetable image (max 5 MB)</p>
+                        </div>
+
+                        <div>
+                            <label for="req-students-count"
+                                class="block text-xs font-bold text-slate-500 uppercase mb-1.5">No. of Students <span
+                                    class="text-red-500">*</span></label>
+                            <input id="req-students-count" type="number" required min="5" max="500"
+                                placeholder="e.g. 60"
+                                class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none transition-colors">
+                            <p id="err-students" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Enter a
+                                number between 5 and 500</p>
+                        </div>
+
+                        <div>
+                            <label for="req-notes"
+                                class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Additional Notes <span
+                                    class="text-slate-400 normal-case font-normal">(optional)</span></label>
+                            <textarea id="req-notes" rows="3" maxlength="500"
+                                placeholder="Any special requirements, lab access, projector needs, etc."
+                                class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none transition-colors resize-none"></textarea>
+                            <p class="text-right text-[10px] text-slate-400 mt-0.5"><span id="char-count">0</span>/500
+                            </p>
+                        </div>
+
+                        <div id="modal-feedback"
+                            class="hidden p-3 rounded-lg text-xs font-semibold border transition-all"></div>
+
+                        <div class="pt-3 border-t border-slate-100 flex justify-between">
+                            <button type="button" onclick="goToStep(2)"
+                                class="px-5 py-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all active:scale-95 flex items-center gap-1.5"><span>←</span>
+                                Back</button>
+                            <button type="submit" id="submit-btn"
+                                class="px-5 py-2.5 rounded-lg bg-christ-gold hover:bg-yellow-600 text-xs font-bold text-christ-dark shadow-sm transition-all active:scale-95 flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Submit Request
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIGN IN MODAL -->
+    <div id="login-modal" class="fixed inset-0 z-50 overflow-y-auto hidden" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm" onclick="closeLoginModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-4 text-center">
+            <div
+                class="relative bg-white rounded-2xl text-left overflow-hidden shadow-2xl max-w-sm w-full border border-slate-200">
+                <div class="px-6 pt-6 pb-4 bg-gradient-to-r from-christ-blue to-[#1E4072] text-white">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-base font-extrabold text-white">Sign In — Digital Mission</h3>
+                        <button onclick="closeLoginModal()"
+                            class="text-white/60 hover:text-white text-xl">&times;</button>
+                    </div>
+                    <p class="text-xs text-blue-250 mt-1">Select your account role to sign in</p>
+                </div>
+                <form id="login-form" class="p-6 space-y-4" onsubmit="handleLoginSubmit(event)">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">User Role</label>
+                        <select id="login-role" onchange="autoFillCredentials()"
+                            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none transition-colors">
+                            <option value="admin">Administrator (Admin Office)</option>
+                            <option value="commerce">Department Coordinator (Commerce)</option>
+                            <option value="volunteer">Student Volunteer (Trainer)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Email Address</label>
+                        <input id="login-email" type="email" required value="admin@christ.edu"
+                            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Password</label>
+                        <input id="login-password" type="password" required value="admin123"
+                            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none">
+                    </div>
+                    <div id="login-feedback"
+                        class="hidden p-3 rounded-lg text-xs font-semibold bg-red-50 text-red-800 border border-red-200">
+                    </div>
+                    <button type="submit"
+                        class="w-full py-2.5 bg-christ-blue hover:bg-christ-hoverBlue text-white font-bold text-xs rounded-xl shadow-md transition-all active:scale-95">
+                        Authenticate & Enter Portal
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- STUDENT TRAINER REGISTRATION MODAL -->
+    <div id="trainer-modal" class="fixed inset-0 z-50 overflow-y-auto hidden" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm" onclick="closeTrainerModal()"></div>
+        <div class="flex items-start justify-center min-h-screen p-4 py-8 text-center">
+            <div
+                class="relative bg-white rounded-2xl text-left overflow-hidden shadow-2xl max-w-lg w-full border border-slate-200">
+                <div class="px-6 pt-6 pb-4 border-b border-slate-100 bg-gradient-to-r from-amber-600 to-[#b45309]">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div
+                                class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/15 text-[10px] font-bold text-white/90 uppercase tracking-wider mb-2">
+                                🎓 Trainer Registry</div>
+                            <h3 class="text-lg font-extrabold text-white">Register as Student Trainer</h3>
+                            <p class="text-xs text-amber-100 mt-0.5">Apply to join the peer-to-peer training core team
+                            </p>
+                        </div>
+                        <button onclick="closeTrainerModal()" class="text-white/60 hover:text-white p-1"><svg
+                                class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg></button>
+                    </div>
+                </div>
+                <form id="trainer-register-form" novalidate class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="train-name" class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Full
+                                Name <span class="text-red-500">*</span></label>
+                            <input id="train-name" type="text" required placeholder="e.g. Adarsh Hegde"
+                                class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+                            <p id="err-train-name" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Trainer
+                                name is required</p>
+                        </div>
+                        <div>
+                            <label for="train-class"
+                                class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Class / Batch <span
+                                    class="text-red-500">*</span></label>
+                            <input id="train-class" type="text" required placeholder="e.g. 2 MCA / 1 M.Sc CS"
+                                class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+                            <p id="err-train-class" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Class
+                                name is required</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="train-sec"
+                                class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Section <span
+                                    class="text-red-500">*</span></label>
+                            <input id="train-sec" type="text" required placeholder="e.g. A" maxlength="2"
+                                class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+                            <p id="err-train-sec" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Section is
+                                required</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Class Level
+                                Preference <span class="text-red-500">*</span></label>
+                            <select id="train-level" required
+                                class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+                                <option value="essentials">Essentials (L1) classes only</option>
+                                <option value="enterprise">Enterprise (L2) classes only</option>
+                                <option value="both">Both levels (L1 & L2)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Interested Domains <span
+                                class="text-red-500">*</span></label>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <label
+                                class="flex items-center gap-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer"><input
+                                    type="checkbox" name="train-domain" value="workspace"
+                                    class="text-amber-500 focus:ring-amber-500" checked> Google Workspace</label>
+                            <label
+                                class="flex items-center gap-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer"><input
+                                    type="checkbox" name="train-domain" value="python"
+                                    class="text-amber-500 focus:ring-amber-500"> Python Programming</label>
+                            <label
+                                class="flex items-center gap-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer"><input
+                                    type="checkbox" name="train-domain" value="canva"
+                                    class="text-amber-500 focus:ring-amber-500"> Canva Layout Design</label>
+                            <label
+                                class="flex items-center gap-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer"><input
+                                    type="checkbox" name="train-domain" value="cloud"
+                                    class="text-amber-500 focus:ring-amber-500"> AWS Cloud Essentials</label>
+                            <label
+                                class="flex items-center gap-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer"><input
+                                    type="checkbox" name="train-domain" value="ai"
+                                    class="text-amber-500 focus:ring-amber-500"> Generative AI Tools</label>
+                        </div>
+                        <p id="err-train-domain" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Please
+                            select at least one domain</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Student Timetable <span
+                                class="text-red-500">*</span></label>
+                        <div id="train-upload-dropzone"
+                            class="border-2 border-dashed border-slate-300 hover:border-amber-500 rounded-xl p-4 text-center cursor-pointer transition-all bg-slate-50 hover:bg-amber-50/10 group"
+                            onclick="document.getElementById('train-timetable').click()">
+                            <input id="train-timetable" type="file" accept="image/png,image/jpeg,image/jpg,image/webp"
+                                class="hidden" onchange="handleTrainerFileUpload(this)">
+                            <div id="train-placeholder">
+                                <svg class="w-8 h-8 mx-auto text-slate-300 group-hover:text-amber-500 transition-colors mb-2"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <p class="text-xs font-semibold text-slate-500">Click to upload your timetable image</p>
+                                <button type="button" onclick="event.stopPropagation(); useMockTimetable('trainer')"
+                                    class="mt-2 px-3 py-1 bg-white hover:bg-slate-100 text-amber-700 border border-slate-200 rounded-lg text-[10px] font-bold transition-all shadow-sm">✨
+                                    Use Mock Timetable</button>
+                            </div>
+                            <div id="train-preview" class="hidden">
+                                <img id="train-preview-img" src="" alt="Trainer Timetable Preview"
+                                    class="max-h-24 mx-auto rounded-lg border border-slate-200">
+                                <p id="train-preview-filename" class="text-[10px] text-slate-500 mt-1"></p>
+                                <button type="button" onclick="event.stopPropagation(); removeTrainerFile()"
+                                    class="text-[10px] text-red-500 font-bold mt-1 hover:underline">✕ Remove</button>
+                            </div>
+                        </div>
+                        <p id="err-train-timetable" class="text-red-500 text-[10px] font-semibold mt-1 hidden">Please
+                            upload your timetable image (or click Use Mock)</p>
+                    </div>
+                    <div id="trainer-feedback"
+                        class="hidden p-3 rounded-lg text-xs font-semibold border transition-all"></div>
+                    <div class="pt-3 border-t border-slate-100 flex justify-end gap-3">
+                        <button type="button" onclick="closeTrainerModal()"
+                            class="px-4 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50">Cancel</button>
+                        <button type="submit"
+                            class="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-xs font-bold text-white shadow-sm">Submit
+                            Registry</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCHEDULER MATCHING MODAL (ADMIN ONLY) -->
+    <div id="scheduler-modal" class="fixed inset-0 z-50 overflow-y-auto hidden" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm" onclick="closeSchedulerModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-4 text-center">
+            <div
+                class="relative bg-white rounded-2xl text-left overflow-hidden shadow-2xl max-w-2xl w-full border border-slate-200">
+                <div class="px-6 pt-5 pb-4 bg-christ-blue text-white flex items-center justify-between">
+                    <div>
+                        <h3 class="text-base font-extrabold text-white">Auto-Scheduling Engine</h3>
+                        <p class="text-xs text-blue-200 mt-0.5">Find overlapping free hours to schedule 2 classes/week
+                        </p>
+                    </div>
+                    <button onclick="closeSchedulerModal()"
+                        class="text-white/60 hover:text-white text-xl">&times;</button>
+                </div>
+                <div class="p-6 space-y-6">
+                    <!-- Request Summary -->
+                    <div class="grid grid-cols-2 gap-4 bg-slate-50 p-3.5 border border-slate-200/60 rounded-xl text-xs">
+                        <div>
+                            <div class="text-slate-400 font-bold uppercase text-[9px]">Class Requesting</div>
+                            <div class="font-extrabold text-christ-dark" id="sched-class-title">1 B.Com Regular (Sec A)
+                            </div>
+                            <div class="text-[10px] text-slate-500" id="sched-class-dept">School of Commerce</div>
+                        </div>
+                        <div>
+                            <div class="text-slate-400 font-bold uppercase text-[9px]">Level & Domain</div>
+                            <div class="font-extrabold text-christ-dark" id="sched-class-level">Essentials (L1)</div>
+                            <div class="text-[10px] text-slate-500" id="sched-class-topic">Google Workspace</div>
+                        </div>
+                    </div>
+
+                    <!-- Match Selection -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-500 uppercase">Available Student
+                            Trainers</label>
+                        <select id="sched-trainer-select" onchange="runTimetableMatch()"
+                            class="w-full rounded-lg border border-slate-255 bg-white px-3 py-2.5 text-xs focus:ring-2 focus:ring-christ-blue outline-none">
+                            <!-- Dynamic populated list of eligible trainers -->
+                        </select>
+                    </div>
+
+                    <!-- Timetable Overlap Matrix -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-slate-500 uppercase">Overlap Matrix (Mon - Fri)</span>
+                            <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">💡
+                                Green slots indicate matched hours</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-center border-collapse text-[10px]">
+                                <thead>
+                                    <tr class="bg-slate-100 font-bold text-slate-500 border-b">
+                                        <th class="p-1.5 text-left">Period</th>
+                                        <th class="p-1.5">Mon</th>
+                                        <th class="p-1.5">Tue</th>
+                                        <th class="p-1.5">Wed</th>
+                                        <th class="p-1.5">Thu</th>
+                                        <th class="p-1.5">Fri</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y text-slate-600" id="overlap-matrix-body">
+                                    <!-- Dynamic rows of slots generated by script -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Results Summary -->
+                    <div class="p-3.5 bg-emerald-50 border border-emerald-100 rounded-xl flex items-start gap-2.5">
+                        <span class="text-lg">📅</span>
+                        <div class="flex-1">
+                            <div class="text-xs font-bold text-emerald-800">Assigned Weekly Class Schedule (2
+                                sessions/week)</div>
+                            <p class="text-[11px] text-emerald-700 mt-0.5 font-bold" id="sched-match-proposed">Select a
+                                trainer to view proposed classes</p>
+                        </div>
+                    </div>
+
+                    <div id="sched-feedback"
+                        class="hidden p-3 rounded-lg text-xs font-semibold border text-center transition-all bg-emerald-50 text-emerald-800 border-emerald-250">
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="flex justify-end gap-3 pt-4 border-t">
+                        <button onclick="closeSchedulerModal()"
+                            class="px-4 py-2 rounded-lg border text-xs font-semibold text-slate-600 hover:bg-slate-50">Cancel</button>
+                        <button onclick="confirmScheduleSubmit()" id="sched-confirm-btn"
+                            class="px-5 py-2.5 rounded-lg bg-christ-blue hover:bg-christ-hoverBlue text-xs font-bold text-white shadow-sm transition-all active:scale-95">Approve
+                            & Confirm Schedule</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        // --- GLOBAL DATA STORE (Simulating DB) ---
+        const initialRequests = [
+            {
+                id: 'req-1',
+                department: 'commerce',
+                className: '1 B.Com Regular',
+                section: 'A',
+                location: 'Block IV, Room 204',
+                crName: 'Priya Sharma',
+                crContact: '9876543210',
+                level: 'essentials',
+                preferredDate: '2026-07-01',
+                studentsCount: 60,
+                notes: 'Require focus on advanced excel spreadsheets.',
+                status: 'pending',
+                timetableName: 'bcom_a_timetable.png',
+                timetableUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150"><rect width="200" height="150" fill="%232957A4"/><text x="10" y="30" fill="white" font-family="sans-serif" font-size="12" font-weight="bold">B.Com Sec A Timetable</text><rect x="10" y="50" width="180" height="2" fill="%23D2AE6D"/><text x="10" y="75" fill="white" font-family="sans-serif" font-size="10">Mon/Wed/Fri Free Slot: P1</text><text x="10" y="95" fill="white" font-family="sans-serif" font-size="10">Tue/Thu Free Slot: P3</text></svg>',
+                slots: ['Mon-P1', 'Wed-P1', 'Fri-P1', 'Tue-P3', 'Thu-P3']
+            },
+            {
+                id: 'req-2',
+                department: 'sciences',
+                className: '2 B.Sc Biotech',
+                section: 'B',
+                location: 'Block II, Lab 402',
+                crName: 'Ravi Verma',
+                crContact: '9123456789',
+                level: 'enterprise',
+                preferredDate: '2026-06-28',
+                studentsCount: 45,
+                notes: 'Python plotting libraries needed for data modeling.',
+                status: 'scheduled',
+                trainerId: 'train-2',
+                scheduleSlots: ['Tue-P1', 'Thu-P3'],
+                timetableName: 'biotech_timetable.png',
+                timetableUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150"><rect width="200" height="150" fill="%231E4072"/><text x="10" y="30" fill="white" font-family="sans-serif" font-size="12" font-weight="bold">B.Sc Biotech Sec B</text><rect x="10" y="50" width="180" height="2" fill="%23D2AE6D"/><text x="10" y="75" fill="white" font-family="sans-serif" font-size="10">Mon-Fri Free Slots: P1 &amp; P3</text></svg>',
+                slots: ['Tue-P1', 'Thu-P3', 'Mon-P2', 'Wed-P2']
+            }
+        ];
+
+        const initialTrainers = [
+            {
+                id: 'train-1',
+                name: 'Rohan Joseph',
+                className: '2 MCA',
+                section: 'A',
+                level: 'both',
+                domains: ['workspace', 'canva'],
+                status: 'available',
+                timetableName: 'rohan_schedule.png',
+                timetableUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150"><rect width="200" height="150" fill="%23D2AE6D"/><text x="10" y="30" fill="%23201E1E" font-family="sans-serif" font-size="12" font-weight="bold">Rohan J. MCA Schedule</text><text x="10" y="75" fill="%23201E1E" font-family="sans-serif" font-size="10">Available: Mon-P1, Wed-P1, Fri-P1</text></svg>',
+                slots: ['Mon-P1', 'Wed-P1', 'Fri-P1', 'Tue-P2', 'Thu-P2']
+            },
+            {
+                id: 'train-2',
+                name: 'Aditi K.',
+                className: 'PhD CS Scholar',
+                section: 'N/A',
+                level: 'enterprise',
+                domains: ['python', 'cloud'],
+                status: 'assigned',
+                timetableName: 'aditi_schedule.png',
+                timetableUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150"><rect width="200" height="150" fill="%23b45309"/><text x="10" y="30" fill="white" font-family="sans-serif" font-size="12" font-weight="bold">Aditi CS PhD Schedule</text><text x="10" y="75" fill="white" font-family="sans-serif" font-size="10">Available: Tue-P1, Thu-P3</text></svg>',
+                slots: ['Tue-P1', 'Thu-P3', 'Mon-P1', 'Wed-P1']
+            },
+            {
+                id: 'train-3',
+                name: 'Arjun Varma',
+                className: '3 B.Tech CSE',
+                section: 'B',
+                level: 'both',
+                domains: ['python', 'cloud', 'ai'],
+                status: 'available',
+                timetableName: 'arjun_schedule.png',
+                timetableUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150"><rect width="200" height="150" fill="%232957A4"/><text x="10" y="30" fill="white" font-family="sans-serif" font-size="12" font-weight="bold">Arjun CSE Schedule</text><text x="10" y="75" fill="white" font-family="sans-serif" font-size="10">Available: Mon-P1, Wed-P1, Thu-P3</text></svg>',
+                slots: ['Mon-P1', 'Wed-P1', 'Thu-P3', 'Tue-P3', 'Fri-P3']
+            }
+        ];
+
+        // --- APP STATE ---
+        let dbRequests = [...initialRequests];
+        let dbTrainers = [...initialTrainers];
+        let simRole = 'guest'; // 'guest', 'volunteer', 'admin'
+        let adminNotifications = 1; // initial pending request (req-1)
+
+        // Modal triggers
+        const modal = document.getElementById('tracker-modal');
+        const feedback = document.getElementById('modal-feedback');
+        const form = document.getElementById('session-request-form');
+        let currentStep = 1;
+        let uploadedFile = null;
+
+        // Trainer Modal triggers
+        const trainerModal = document.getElementById('trainer-modal');
+        const trainerForm = document.getElementById('trainer-register-form');
+        const trainerFeedback = document.getElementById('trainer-feedback');
+        let uploadedTrainerFile = null;
+
+        // Scheduler Modal triggers
+        const schedulerModal = document.getElementById('scheduler-modal');
+        let activeSchedulingRequestId = null;
+
+        // Mobile menu
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        function toggleMobileMenu() {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            }
+        }
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+        // --- MOCK TIMETABLES GENERATION ---
+        function getMockTimetableSvg(roleName) {
+            return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"><rect width="300" height="200" fill="%23f8fafc" stroke="%232957A4" stroke-width="4"/><text x="15" y="30" fill="%232957A4" font-family="sans-serif" font-size="14" font-weight="bold">${roleName} Timetable Matrix</text><line x1="15" y1="45" x2="285" y2="45" stroke="%23D2AE6D" stroke-width="2"/><text x="15" y="70" fill="%23475569" font-family="sans-serif" font-size="10" font-weight="bold">Mon: FREE [P1, P3]</text><text x="15" y="90" fill="%23475569" font-family="sans-serif" font-size="10" font-weight="bold">Tue: ENG [P1], LAB [P2], FREE [P3]</text><text x="15" y="110" fill="%23475569" font-family="sans-serif" font-size="10" font-weight="bold">Wed: FREE [P1, P4]</text><text x="15" y="130" fill="%23475569" font-family="sans-serif" font-size="10" font-weight="bold">Thu: MATH [P1], BUS [P2], FREE [P3]</text><text x="15" y="150" fill="%23475569" font-family="sans-serif" font-size="10" font-weight="bold">Fri: FREE [P1, P2]</text><text x="15" y="180" fill="%232957A4" font-family="sans-serif" font-size="9" font-weight="bold">Generated via Digital Mission Tracker</text></svg>`;
+        }
+
+        function useMockTimetable(type) {
+            if (type === 'dept') {
+                uploadedFile = {
+                    name: 'mock_dept_timetable.png',
+                    size: 45 * 1024,
+                    dataUrl: getMockTimetableSvg('Department Class')
+                };
+                document.getElementById('preview-img').src = uploadedFile.dataUrl;
+                document.getElementById('preview-filename').textContent = uploadedFile.name + ' (45.0 KB)';
+                document.getElementById('upload-placeholder').classList.add('hidden');
+                document.getElementById('upload-preview').classList.remove('hidden');
+                document.getElementById('upload-dropzone').classList.add('border-christ-blue', 'bg-blue-50/30');
+                hideError('err-timetable');
+            } else if (type === 'trainer') {
+                uploadedTrainerFile = {
+                    name: 'mock_student_timetable.png',
+                    size: 38 * 1024,
+                    dataUrl: getMockTimetableSvg('Student Volunteer')
+                };
+                document.getElementById('train-preview-img').src = uploadedTrainerFile.dataUrl;
+                document.getElementById('train-preview-filename').textContent = uploadedTrainerFile.name + ' (38.0 KB)';
+                document.getElementById('train-placeholder').classList.add('hidden');
+                document.getElementById('train-preview').classList.remove('hidden');
+                document.getElementById('train-upload-dropzone').classList.add('border-amber-500', 'bg-amber-50/10');
+                hideError('err-train-timetable');
+            }
+            showToast('✓ Mock timetable pre-filled successfully!');
+        }
+
+        // --- AUTH & PERSONA CONTROLLER ---
+        const authHeaderBtn = document.getElementById('auth-header-btn');
+        const authMobileBtn = document.getElementById('auth-mobile-btn');
+        const activeUserDisplay = document.getElementById('active-user-display');
+        const dbPanelTitle = document.getElementById('db-panel-title');
+        const adminBadgeCount = document.getElementById('admin-badge-count');
+        const mobileBadge = document.getElementById('mobile-badge');
+
+        const roleCreds = {
+            admin: { email: 'admin@christ.edu', pass: 'admin123', name: 'Admin Office' },
+            commerce: { email: 'dept.commerce@christ.edu', pass: 'commerce123', name: 'Commerce Dept' },
+            volunteer: { email: 'student.mentor@christ.edu', pass: 'trainer123', name: 'Volunteer Core' }
+        };
+
+        function openLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            autoFillCredentials();
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            document.getElementById('login-feedback').classList.add('hidden');
+        }
+
+        function autoFillCredentials() {
+            const role = document.getElementById('login-role').value;
+            const creds = roleCreds[role];
+            if (creds) {
+                document.getElementById('login-email').value = creds.email;
+                document.getElementById('login-password').value = creds.pass;
+            }
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const role = document.getElementById('login-role').value;
+            const feedback = document.getElementById('login-feedback');
+
+            feedback.textContent = 'Authenticating with CHRIST Directory...';
+            feedback.className = 'p-3 rounded-lg text-xs font-semibold bg-blue-50 text-christ-blue border border-blue-200';
+            feedback.classList.remove('hidden');
+
+            setTimeout(() => {
+                feedback.textContent = 'Sign-in successful!';
+                feedback.className = 'p-3 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200';
+
+                setTimeout(() => {
+                    closeLoginModal();
+                    // Set active view role based on login choice
+                    if (role === 'admin') setSimulationRole('admin');
+                    else if (role === 'volunteer') setSimulationRole('volunteer');
+                    else setSimulationRole('guest', roleCreds[role].email);
+                    showToast(`Logged in successfully as ${roleCreds[role].name}`);
+                }, 800);
+            }, 1000);
+        }
+
+        function handleLogout() {
+            setSimulationRole('guest');
+            showToast('Logged out successfully.');
+        }
+
+        // Sets role view and updates DOM rendering
+        function setSimulationRole(role, customEmail = null) {
+            simRole = role;
+
+            // Sync Persona buttons
+            document.querySelectorAll('[id^="role-btn-"]').forEach(btn => {
+                btn.classList.remove('bg-blue-50', 'text-christ-blue', 'bg-amber-50', 'text-amber-700', 'bg-slate-100', 'text-slate-700');
+                btn.classList.add('text-slate-500', 'hover:text-slate-700');
+            });
+
+            const activeBtn = document.getElementById('role-btn-' + role);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-500', 'hover:text-slate-700');
+                if (role === 'guest') activeBtn.classList.add('bg-blue-50', 'text-christ-blue');
+                else if (role === 'volunteer') activeBtn.classList.add('bg-amber-50', 'text-amber-700');
+                else if (role === 'admin') activeBtn.classList.add('bg-slate-100', 'text-slate-700');
+            }
+
+            // Sync Header indicators
+            if (role === 'guest') {
+                const emailStr = customEmail || 'guest@christ.edu';
+                activeUserDisplay.textContent = emailStr;
+                dbPanelTitle.textContent = 'DIGITAL MISSION CONTROL PANEL — GUEST MODE';
+                authHeaderBtn.innerHTML = `<span>Sign In</span>`;
+                authHeaderBtn.onclick = openLoginModal;
+                document.getElementById('sim-banner-text').textContent = 'You are browsing as Guest. Request a session or register as a trainer, then switch to "Admin Office" to match and schedule.';
+            } else if (role === 'volunteer') {
+                activeUserDisplay.textContent = 'student.mentor@christ.edu';
+                dbPanelTitle.textContent = 'PEER TRAINER LOG REGISTRY — VOLUNTEER CORE';
+                authHeaderBtn.innerHTML = `<span>Sign Out</span>`;
+                authHeaderBtn.onclick = handleLogout;
+                document.getElementById('sim-banner-text').textContent = 'Logged in as Trainer Volunteer. You can check your schedules or register for another digital skills mission batch below.';
+            } else if (role === 'admin') {
+                activeUserDisplay.textContent = 'admin@christ.edu';
+                dbPanelTitle.textContent = 'ADMINISTRATIVE DISPATCH COMMAND CENTER';
+                authHeaderBtn.innerHTML = `<span>Sign Out</span>`;
+                authHeaderBtn.onclick = handleLogout;
+                document.getElementById('sim-banner-text').textContent = 'Administrator account active. Match pending department requests with registered student volunteers and dispatch scheduling sheets.';
+            }
+
+            // Update mobile headers
+            authMobileBtn.textContent = (role === 'guest') ? 'Sign In' : 'Sign Out';
+            authMobileBtn.onclick = (role === 'guest') ? () => { openLoginModal(); toggleMobileMenu(); } : () => { handleLogout(); toggleMobileMenu(); };
+
+            // Update Notification Badge UI
+            if (adminNotifications > 0 && role === 'admin') {
+                adminBadgeCount.textContent = adminNotifications;
+                adminBadgeCount.classList.remove('hidden');
+                mobileBadge.classList.remove('hidden');
+            } else {
+                adminBadgeCount.classList.add('hidden');
+                mobileBadge.classList.add('hidden');
+            }
+
+            renderDashboardSidebar();
+            renderDashboardMainContent();
+            updateSimulationStats();
+        }
+
+        // --- DEPARTMENT REQUEST FORM CONTROLLER ---
+        function openModal() {
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            currentStep = 1;
+            showStep(1);
+        }
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            feedback.classList.add('hidden');
+            form.reset();
+            removeFile();
+            clearAllErrors();
+            currentStep = 1;
+            showStep(1);
+            document.getElementById('char-count').textContent = '0';
+        }
+
+        function showStep(step) {
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById('form-step-' + i).classList.toggle('hidden', i !== step);
+                const ind = document.getElementById('step-ind-' + i);
+                if (i <= step) { ind.classList.add('bg-christ-gold'); ind.classList.remove('bg-white/20'); }
+                else { ind.classList.remove('bg-christ-gold'); ind.classList.add('bg-white/20'); }
+            }
+        }
+
+        function goToStep(step) {
+            if (step > currentStep) {
+                if (!validateStep(currentStep)) return;
+            }
+            currentStep = step;
+            showStep(step);
+        }
+
+        function showError(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.remove('hidden');
+                const input = el.previousElementSibling || el.parentElement.querySelector('input, select');
+                if (input && input.classList) { input.classList.add('border-red-400'); input.classList.remove('border-slate-200'); }
+            }
+        }
+        function hideError(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.add('hidden');
+                const input = el.previousElementSibling || el.parentElement.querySelector('input, select');
+                if (input && input.classList) { input.classList.remove('border-red-400'); input.classList.add('border-slate-200'); }
+            }
+        }
+        function clearAllErrors() {
+            document.querySelectorAll('[id^="err-"]').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('#session-request-form input, #session-request-form select').forEach(el => {
+                el.classList.remove('border-red-400');
+                el.classList.add('border-slate-200');
+            });
+        }
+
+        function validateStep(step) {
+            let valid = true;
+            if (step === 1) {
+                const dept = document.getElementById('req-department');
+                const cls = document.getElementById('req-classname');
+                const sec = document.getElementById('req-section');
+                const loc = document.getElementById('req-location');
+                if (!dept.value) { showError('err-department'); valid = false; } else { hideError('err-department'); }
+                if (!cls.value.trim()) { showError('err-classname'); valid = false; } else { hideError('err-classname'); }
+                if (!sec.value.trim()) { showError('err-section'); valid = false; } else { hideError('err-section'); }
+                if (!loc.value.trim()) { showError('err-location'); valid = false; } else { hideError('err-location'); }
+            }
+            if (step === 2) {
+                const crn = document.getElementById('req-crname');
+                const crc = document.getElementById('req-crcontact');
+                const lvl = document.querySelector('input[name="session-level"]:checked');
+                const dt = document.getElementById('req-preferred-date');
+                if (!crn.value.trim()) { showError('err-crname'); valid = false; } else { hideError('err-crname'); }
+                const phoneDigits = crc.value.replace(/[\s\+\-]/g, '');
+                if (!phoneDigits || phoneDigits.length < 10 || !/^\d+$/.test(phoneDigits)) { showError('err-crcontact'); valid = false; } else { hideError('err-crcontact'); }
+                if (!lvl) { showError('err-level'); valid = false; } else { hideError('err-level'); }
+                if (!dt.value) { showError('err-date'); valid = false; }
+                else {
+                    const chosen = new Date(dt.value); const today = new Date(); today.setHours(0, 0, 0, 0);
+                    if (chosen < today) { showError('err-date'); valid = false; } else { hideError('err-date'); }
+                }
+            }
+            if (step === 3) {
+                const sc = document.getElementById('req-students-count');
+                const sv = parseInt(sc.value);
+                if (!sc.value || isNaN(sv) || sv < 5 || sv > 500) { showError('err-students'); valid = false; } else { hideError('err-students'); }
+                if (!uploadedFile) { showError('err-timetable'); valid = false; } else { hideError('err-timetable'); }
+            }
+            return valid;
+        }
+
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Please upload a valid image file (PNG, JPG, or WebP).');
+                input.value = ''; return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be under 5 MB.');
+                input.value = ''; return;
+            }
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                uploadedFile = {
+                    name: file.name,
+                    size: file.size,
+                    dataUrl: e.target.result
+                };
+                document.getElementById('preview-img').src = e.target.result;
+                document.getElementById('preview-filename').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+                document.getElementById('upload-placeholder').classList.add('hidden');
+                document.getElementById('upload-preview').classList.remove('hidden');
+                document.getElementById('upload-dropzone').classList.add('border-christ-blue', 'bg-blue-50/30');
+                hideError('err-timetable');
+            };
+            reader.readAsDataURL(file);
+        }
+        function removeFile() {
+            uploadedFile = null;
+            const input = document.getElementById('req-timetable');
+            if (input) input.value = '';
+            const ph = document.getElementById('upload-placeholder');
+            const pv = document.getElementById('upload-preview');
+            const dz = document.getElementById('upload-dropzone');
+            if (ph) ph.classList.remove('hidden');
+            if (pv) pv.classList.add('hidden');
+            if (dz) { dz.classList.remove('border-christ-blue', 'bg-blue-50/30'); }
+        }
+
+        const notesEl = document.getElementById('req-notes');
+        if (notesEl) {
+            notesEl.addEventListener('input', function () {
+                document.getElementById('char-count').textContent = this.value.length;
+            });
+        }
+
+        // Live validation on typing
+        document.querySelectorAll('#session-request-form input, #session-request-form select').forEach(el => {
+            el.addEventListener('input', function () {
+                this.classList.remove('border-red-400'); this.classList.add('border-slate-200');
+                const errEl = this.parentElement.querySelector('[id^="err-"]');
+                if (errEl) errEl.classList.add('hidden');
+            });
+        });
+
+        // Form submit
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!validateStep(1) || !validateStep(2) || !validateStep(3)) {
+                feedback.textContent = '✕ Please fix all errors before submitting.';
+                feedback.className = 'p-3 rounded-lg text-xs font-semibold border bg-red-50 text-red-700 border-red-200';
+                feedback.classList.remove('hidden');
+                return;
+            }
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg> Submitting...';
+
+            setTimeout(function () {
+                // Compile form data to push to simulated database
+                const newReq = {
+                    id: 'req-' + (dbRequests.length + 1),
+                    department: document.getElementById('req-department').value,
+                    className: document.getElementById('req-classname').value,
+                    section: document.getElementById('req-section').value,
+                    location: document.getElementById('req-location').value,
+                    crName: document.getElementById('req-crname').value,
+                    crContact: document.getElementById('req-crcontact').value,
+                    level: document.querySelector('input[name="session-level"]:checked').value,
+                    preferredDate: document.getElementById('req-preferred-date').value,
+                    studentsCount: parseInt(document.getElementById('req-students-count').value),
+                    notes: document.getElementById('req-notes').value,
+                    status: 'pending',
+                    timetableName: uploadedFile.name,
+                    timetableUrl: uploadedFile.dataUrl,
+                    // Give department default free slots for scheduler overlap
+                    slots: ['Mon-P1', 'Wed-P1', 'Fri-P1', 'Tue-P3', 'Thu-P3']
+                };
+
+                dbRequests.push(newReq);
+                adminNotifications++; // Add to notification count
+
+                feedback.textContent = '✓ Session request submitted successfully! Admin notifications updated.';
+                feedback.className = 'p-3 rounded-lg text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200';
+                feedback.classList.remove('hidden');
+
+                btn.disabled = false;
+                btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Submit Request';
+
+                // Live reload views
+                setSimulationRole(simRole);
+                showToast(`🔔 NEW SESSION REQUEST: ${newReq.className} has registered. Check Admin Office.`);
+
+                setTimeout(closeModal, 1500);
+            }, 1200);
+        });
+
+        // --- STUDENT TRAINER REGISTRATION CONTROLLER ---
+        function openTrainerModal() {
+            trainerModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeTrainerModal() {
+            trainerModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            trainerForm.reset();
+            removeTrainerFile();
+            clearTrainerErrors();
+            trainerFeedback.classList.add('hidden');
+        }
+
+        function handleTrainerFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Please upload a valid image file (PNG, JPG, or WebP).');
+                input.value = ''; return;
+            }
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                uploadedTrainerFile = {
+                    name: file.name,
+                    size: file.size,
+                    dataUrl: e.target.result
+                };
+                document.getElementById('train-preview-img').src = e.target.result;
+                document.getElementById('train-preview-filename').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+                document.getElementById('train-placeholder').classList.add('hidden');
+                document.getElementById('train-preview').classList.remove('hidden');
+                document.getElementById('train-upload-dropzone').classList.add('border-amber-500', 'bg-amber-50/10');
+                hideError('err-train-timetable');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeTrainerFile() {
+            uploadedTrainerFile = null;
+            const input = document.getElementById('train-timetable');
+            if (input) input.value = '';
+            document.getElementById('train-placeholder').classList.remove('hidden');
+            document.getElementById('train-preview').classList.add('hidden');
+            document.getElementById('train-upload-dropzone').classList.remove('border-amber-500', 'bg-amber-50/10');
+        }
+
+        function clearTrainerErrors() {
+            document.querySelectorAll('[id^="err-train-"]').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('#trainer-register-form input').forEach(el => {
+                el.classList.remove('border-red-400');
+                el.classList.add('border-slate-200');
+            });
+        }
+
+        trainerForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            clearTrainerErrors();
+
+            let valid = true;
+            const name = document.getElementById('train-name');
+            const cls = document.getElementById('train-class');
+            const sec = document.getElementById('train-sec');
+            const domains = document.querySelectorAll('input[name="train-domain"]:checked');
+
+            if (!name.value.trim()) { showError('err-train-name'); valid = false; } else { hideError('err-train-name'); }
+            if (!cls.value.trim()) { showError('err-train-class'); valid = false; } else { hideError('err-train-class'); }
+            if (!sec.value.trim()) { showError('err-train-sec'); valid = false; } else { hideError('err-train-sec'); }
+            if (domains.length === 0) { showError('err-train-domain'); valid = false; } else { hideError('err-train-domain'); }
+            if (!uploadedTrainerFile) { showError('err-train-timetable'); valid = false; } else { hideError('err-train-timetable'); }
+
+            if (!valid) {
+                trainerFeedback.textContent = '✕ Please complete all required field validations.';
+                trainerFeedback.className = 'p-3 rounded-lg text-xs font-semibold border bg-red-50 text-red-700 border-red-200';
+                trainerFeedback.classList.remove('hidden');
+                return;
+            }
+
+            const activeDomains = Array.from(domains).map(cb => cb.value);
+            const levelVal = document.getElementById('train-level').value;
+
+            const newTrainer = {
+                id: 'train-' + (dbTrainers.length + 1),
+                name: name.value.trim(),
+                className: cls.value.trim(),
+                section: sec.value.trim().toUpperCase(),
+                level: levelVal,
+                domains: activeDomains,
+                status: 'available',
+                timetableName: uploadedTrainerFile.name,
+                timetableUrl: uploadedTrainerFile.dataUrl,
+                // Assign student free slots that will overlap with department schedule slots (Mon-P1, Wed-P1, Fri-P1)
+                slots: ['Mon-P1', 'Wed-P1', 'Tue-P1', 'Thu-P1', 'Fri-P1']
+            };
+
+            dbTrainers.push(newTrainer);
+
+            trainerFeedback.textContent = '✓ Registered trainer successfully! Added to Peer Mentoring Database.';
+            trainerFeedback.className = 'p-3 rounded-lg text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-250';
+            trainerFeedback.classList.remove('hidden');
+
+            setTimeout(() => {
+                closeTrainerModal();
+                setSimulationRole(simRole);
+                showToast(`🎓 REGISTERED VOLUNTEER: ${newTrainer.name} is now available in database.`);
+            }, 1200);
+        });
+
+        // --- DASHBOARD UI RENDERING ---
+        function updateSimulationStats() {
+            document.getElementById('stat-total-requests').textContent = dbRequests.length;
+            document.getElementById('stat-total-trainers').textContent = dbTrainers.length;
+        }
+
+        function renderDashboardSidebar() {
+            const container = document.getElementById('nav-list-container');
+            container.innerHTML = `<span class="text-[10px] text-slate-400 font-bold uppercase block tracking-wider mb-2">Workspace Navigation</span>`;
+
+            const btnClass = "w-full text-left px-3 py-2 text-slate-600 rounded-lg hover:bg-slate-200 text-xs font-semibold flex items-center gap-2 transition-all";
+            const activeBtnClass = "w-full text-left px-3 py-2 bg-blue-50 text-christ-blue rounded-lg font-bold text-xs flex items-center gap-2 transition-all";
+
+            if (simRole === 'guest') {
+                container.innerHTML += `<button onclick="switchTab('analytics')" class="${activeBtnClass}" id="tab-btn-analytics">📊 Analytics Summary</button>`;
+                container.innerHTML += `<button onclick="openModal()" class="${btnClass}">✏️ Request Cohort Session</button>`;
+                container.innerHTML += `<button onclick="openTrainerModal()" class="${btnClass}">🎓 Student Trainer Sign-up</button>`;
+            } else if (simRole === 'volunteer') {
+                container.innerHTML += `<button onclick="switchTab('trainer-center')" class="${activeBtnClass}" id="tab-btn-trainer-center">🎓 Peer Trainer Center</button>`;
+                container.innerHTML += `<button onclick="openTrainerModal()" class="${btnClass}">📝 Register New Domain</button>`;
+            } else if (simRole === 'admin') {
+                container.innerHTML += `<button onclick="switchTab('admin-analytics')" class="${activeBtnClass}" id="tab-btn-admin-analytics">📊 Dispatch Analytics</button>`;
+                container.innerHTML += `<button onclick="switchTab('admin-requests')" class="${btnClass} relative" id="tab-btn-admin-requests">
+                    📋 Pending Requests 
+                    <span class="bg-red-500 text-white rounded-full text-[9px] px-1.5 py-0.5 ml-auto font-black" id="sidebar-notif-badge">${dbRequests.filter(r => r.status === 'pending').length}</span>
+                </button>`;
+                container.innerHTML += `<button onclick="switchTab('admin-trainers')" class="${btnClass}" id="tab-btn-admin-trainers">🎓 Trainer Directory</button>`;
+            }
+        }
+
+        let activeTab = 'analytics';
+        function switchTab(tabId) {
+            activeTab = tabId;
+            document.querySelectorAll('#nav-list-container button').forEach(btn => {
+                btn.classList.remove('bg-blue-50', 'text-christ-blue', 'font-bold');
+                btn.classList.add('text-slate-600', 'font-semibold');
+            });
+            const activeBtn = document.getElementById('tab-btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-blue-50', 'text-christ-blue', 'font-bold');
+                activeBtn.classList.remove('text-slate-600', 'font-semibold');
+            }
+            renderDashboardMainContent();
+        }
+
+        // Main Router for Dashboard Tabs
+        function renderDashboardMainContent() {
+            const container = document.getElementById('dashboard-main-content');
+            container.innerHTML = '';
+
+            // Guard activeTab if it doesn't match role accessibility
+            if (simRole === 'guest' && !['analytics'].includes(activeTab)) activeTab = 'analytics';
+            if (simRole === 'volunteer' && !['trainer-center'].includes(activeTab)) activeTab = 'trainer-center';
+            if (simRole === 'admin' && !['admin-analytics', 'admin-requests', 'admin-trainers'].includes(activeTab)) activeTab = 'admin-analytics';
+
+            if (activeTab === 'analytics') {
+                renderGuestAnalytics(container);
+            } else if (activeTab === 'trainer-center') {
+                renderTrainerCenter(container);
+            } else if (activeTab === 'admin-analytics') {
+                renderAdminAnalytics(container);
+            } else if (activeTab === 'admin-requests') {
+                renderAdminRequests(container);
+            } else if (activeTab === 'admin-trainers') {
+                renderAdminTrainers(container);
+            }
+        }
+
+        // --- TAB RENDERING BLOCKS ---
+        function renderGuestAnalytics(container) {
+            container.innerHTML = `
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="border border-slate-200 p-4 rounded-xl space-y-1 bg-slate-50/50">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase block">Target Cohorts</span>
+                        <span class="text-2xl font-black text-christ-blue">${dbRequests.length} Classes</span>
+                    </div>
+                    <div class="border border-slate-200 p-4 rounded-xl space-y-1 bg-slate-50/50">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase block">Completed Sessions</span>
+                        <span class="text-2xl font-black text-christ-blue font-mono">148 Hours</span>
+                    </div>
+                    <div class="border border-slate-200 p-4 rounded-xl space-y-1 bg-slate-50/50">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase block">Active Trainers</span>
+                        <span class="text-2xl font-black text-amber-500 font-mono">${dbTrainers.length} Trainers</span>
+                    </div>
+                </div>
+
+                <div class="space-y-4 pt-2">
+                    <h4 class="font-extrabold text-sm text-christ-dark">Weekly Progress Monitoring</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-slate-600">Google Workspace (L1) Cohorts</span>
+                            <span class="text-christ-blue">82% Completed</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-christ-blue h-full rounded-full w-[82%]"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-slate-600">Python Scripting (L2) Cohorts</span>
+                            <span class="text-christ-gold">60% Completed</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-christ-gold h-full rounded-full w-[60%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-slate-200 rounded-xl overflow-hidden pt-2">
+                    <div class="bg-slate-50 px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b">Recent Recorded Activity</div>
+                    <div class="divide-y text-xs">
+                        <div class="px-4 py-3 flex justify-between">
+                            <span class="font-bold text-slate-800">Rohan J. (MCA Student)</span>
+                            <span class="text-slate-500">Google Workspace Lab</span>
+                            <span class="text-emerald-600 font-semibold bg-emerald-50 px-2.5 py-0.5 rounded">Success</span>
+                        </div>
+                        <div class="px-4 py-3 flex justify-between">
+                            <span class="font-bold text-slate-800">Aditi K. (PhD Scholar)</span>
+                            <span class="text-slate-500">Python Basics Lab 402</span>
+                            <span class="text-emerald-600 font-semibold bg-emerald-50 px-2.5 py-0.5 rounded">Success</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTrainerCenter(container) {
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-extrabold text-sm text-christ-dark">Your Assigned Peer-Mentoring Sessions</h4>
+                        <span class="px-2 py-1 rounded bg-amber-50 border border-amber-200 text-amber-800 font-bold text-[10px] uppercase">Volunteer Core</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4">
+                        ${dbRequests.filter(r => r.status === 'scheduled' && r.trainerId === 'train-2').map(r => `
+                            <div class="border border-emerald-200 bg-emerald-50/20 rounded-xl p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Scheduled Matches</span>
+                                        <span class="text-[10px] font-semibold text-slate-400">${r.preferredDate}</span>
+                                    </div>
+                                    <h5 class="font-bold text-sm text-christ-dark">${r.className} (${r.section})</h5>
+                                    <p class="text-xs text-slate-500">Location: ${r.location} | Level: ${r.level === 'enterprise' ? 'L2 Enterprise' : 'L1 Essentials'}</p>
+                                </div>
+                                <div class="text-left md:text-right">
+                                    <div class="text-xs font-bold text-christ-blue">Weekly Schedule (2 days):</div>
+                                    <div class="text-xs font-extrabold text-slate-700 mt-1">📅 ${r.scheduleSlots ? r.scheduleSlots.join(' & ') : 'N/A'}</div>
+                                </div>
+                            </div>
+                        `).join('') || `<p class="text-xs text-slate-500 text-center py-6">You have no active classes scheduled yet.</p>`}
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50 space-y-2">
+                        <h5 class="font-bold text-xs text-christ-dark">💡 Quick Mentor Instructions</h5>
+                        <p class="text-xs text-slate-500 leading-relaxed">Ensure to reach the allotted classroom 10 minutes prior to session timing. Set up screen projectors and share workbook practice modules with the Class Representative (CR).</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAdminAnalytics(container) {
+            const pendingCount = dbRequests.filter(r => r.status === 'pending').length;
+            const activeCount = dbRequests.filter(r => r.status === 'scheduled').length;
+
+            container.innerHTML = `
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="border border-slate-200 p-4 rounded-xl bg-slate-50/50">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase block">Pending Review</span>
+                        <span class="text-2xl font-black text-amber-500">${pendingCount} Requests</span>
+                    </div>
+                    <div class="border border-slate-200 p-4 rounded-xl bg-slate-50/50">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase block">Scheduled Dispatch</span>
+                        <span class="text-2xl font-black text-emerald-600">${activeCount} Batches</span>
+                    </div>
+                    <div class="border border-slate-200 p-4 rounded-xl bg-slate-50/50">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase block">Total Volunteer Pool</span>
+                        <span class="text-2xl font-black text-christ-blue">${dbTrainers.length} Trainers</span>
+                    </div>
+                </div>
+
+                <!-- Live alert block -->
+                ${pendingCount > 0 ? `
+                    <div class="border border-amber-250 bg-amber-50/50 rounded-xl p-4 flex items-center justify-between gap-4 animate-pulse">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🔔</span>
+                            <div>
+                                <h5 class="font-bold text-xs text-amber-900">New Session Request(s) Registered!</h5>
+                                <p class="text-[10px] text-amber-700">Departments have registered new timetables. Action required to matching scheduled slots.</p>
+                            </div>
+                        </div>
+                        <button onclick="switchTab('admin-requests')" class="px-3.5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold text-[10px] shadow transition-all active:scale-95">Match Now</button>
+                    </div>
+                ` : ''}
+
+                <div class="border border-slate-200 rounded-xl overflow-hidden pt-2">
+                    <div class="bg-slate-50 px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b">Scheduled Mentoring Dispatch List</div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase border-b">
+                                <tr>
+                                    <th class="p-3">Class/Department</th>
+                                    <th class="p-3">Level</th>
+                                    <th class="p-3">Assigned Mentor</th>
+                                    <th class="p-3">Weekly Schedule</th>
+                                    <th class="p-3">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y text-slate-600">
+                                ${dbRequests.filter(r => r.status === 'scheduled').map(r => {
+                const trainer = dbTrainers.find(t => t.id === r.trainerId);
+                return `
+                                        <tr class="hover:bg-slate-50/50">
+                                            <td class="p-3 font-semibold text-slate-800">${r.className} (${r.section})<br><span class="text-[10px] text-slate-400">${r.department}</span></td>
+                                            <td class="p-3"><span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${r.level === 'enterprise' ? 'bg-purple-50 text-purple-700 border border-purple-200' : 'bg-blue-50 text-christ-blue border border-blue-200'}">${r.level}</span></td>
+                                            <td class="p-3 font-semibold text-slate-700">${trainer ? trainer.name : 'N/A'}<br><span class="text-[10px] text-slate-400">${trainer ? trainer.className : ''}</span></td>
+                                            <td class="p-3 font-mono font-bold text-christ-blue">${r.scheduleSlots ? r.scheduleSlots.join(' & ') : 'N/A'}</td>
+                                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200">Scheduled</span></td>
+                                        </tr>
+                                    `;
+            }).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">No scheduled sessions active.</td></tr>`}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAdminRequests(container) {
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <h4 class="font-extrabold text-sm text-christ-dark">Review Pending Department Requests</h4>
+                    <div class="grid grid-cols-1 gap-4">
+                        ${dbRequests.filter(r => r.status === 'pending').map(r => `
+                            <div class="border border-slate-200 bg-white rounded-xl p-4 shadow-sm space-y-4 hover:border-slate-350 transition-all">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h5 class="font-extrabold text-base text-christ-dark">${r.className} (Sec ${r.section})</h5>
+                                        <p class="text-xs text-slate-500">${r.department} | CR: ${r.crName} (${r.crContact})</p>
+                                    </div>
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-amber-50 text-amber-800 border border-amber-200">Pending Review</span>
+                                </div>
+
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs bg-slate-50 p-3 rounded-lg">
+                                    <div>
+                                        <span class="text-[10px] font-semibold text-slate-400 uppercase">Target Students</span>
+                                        <div class="font-extrabold text-slate-700 mt-0.5">${r.studentsCount} Students</div>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] font-semibold text-slate-400 uppercase">Class Preference</span>
+                                        <div class="font-extrabold text-christ-blue mt-0.5 capitalize">${r.level} Level</div>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] font-semibold text-slate-400 uppercase">Timetable Uploaded</span>
+                                        <div class="font-bold text-slate-600 mt-0.5 truncate hover:underline cursor-pointer" onclick="openTimetablePreview('${r.timetableUrl}')">📄 ${r.timetableName}</div>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] font-semibold text-slate-400 uppercase">Date Range</span>
+                                        <div class="font-bold text-slate-600 mt-0.5">Start: ${r.preferredDate}</div>
+                                    </div>
+                                </div>
+
+                                ${r.notes ? `
+                                    <p class="text-xs text-slate-500 bg-blue-50/30 p-2.5 rounded-lg border border-slate-100">
+                                        <strong class="text-christ-blue text-[10px] font-bold uppercase block mb-1">Additional Faculty Notes</strong>
+                                        "${r.notes}"
+                                    </p>
+                                ` : ''}
+
+                                <div class="flex justify-end gap-2.5">
+                                    <button onclick="openSchedulerModal('${r.id}')" class="px-4 py-2 bg-christ-blue hover:bg-christ-hoverBlue text-white rounded-lg font-bold text-xs transition-all active:scale-95 shadow flex items-center gap-1">
+                                        🗓️ Run Auto-Scheduler Match
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('') || `<p class="text-xs text-slate-500 text-center py-12">All requests have been successfully matched and scheduled! No pending review items.</p>`}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAdminTrainers(container) {
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <h4 class="font-extrabold text-sm text-christ-dark">Registered Trainer Volunteer Directory</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs bg-white border border-slate-200 rounded-xl overflow-hidden">
+                            <thead class="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase border-b">
+                                <tr>
+                                    <th class="p-3">Trainer Name</th>
+                                    <th class="p-3">Class/Batch</th>
+                                    <th class="p-3">Level Preference</th>
+                                    <th class="p-3">Core Domains</th>
+                                    <th class="p-3">Current Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y text-slate-600">
+                                ${dbTrainers.map(t => `
+                                    <tr class="hover:bg-slate-50/50">
+                                        <td class="p-3 font-semibold text-slate-800">${t.name}</td>
+                                        <td class="p-3">${t.className} (${t.section})</td>
+                                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 text-slate-700">${t.level}</span></td>
+                                        <td class="p-3">
+                                            <div class="flex flex-wrap gap-1">
+                                                ${t.domains.map(d => `<span class="px-1.5 py-0.5 rounded-full bg-slate-100 text-[9px] font-bold text-slate-600">${d}</span>`).join('')}
+                                            </div>
+                                        </td>
+                                        <td class="p-3">
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${t.status === 'assigned' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-blue-50 text-christ-blue border border-blue-200'}">
+                                                ${t.status === 'assigned' ? 'Assigned' : 'Available'}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openTimetablePreview(dataUrl) {
+            const win = window.open();
+            win.document.write(`<iframe src="${dataUrl}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+        }
+
+        // --- SCHEDULER & MATCHING ALGORITHM ---
+        const periods = ['P1 (09:30)', 'P2 (11:00)', 'P3 (01:30)', 'P4 (03:00)'];
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+        let matchedSlotsList = [];
+
+        function openSchedulerModal(reqId) {
+            activeSchedulingRequestId = reqId;
+            const request = dbRequests.find(r => r.id === reqId);
+            if (!request) return;
+
+            document.getElementById('sched-class-title').textContent = `${request.className} (Sec ${request.section})`;
+            document.getElementById('sched-class-dept').textContent = request.department === 'commerce' ? 'School of Commerce' : 'School of Sciences';
+            document.getElementById('sched-class-level').textContent = `${request.level === 'enterprise' ? 'L2 Enterprise' : 'L1 Essentials'}`;
+            document.getElementById('sched-class-topic').textContent = request.level === 'enterprise' ? 'Python Programming' : 'Google Workspace';
+
+            // Populate eligible trainers select list
+            const selectEl = document.getElementById('sched-trainer-select');
+            selectEl.innerHTML = '';
+
+            const eligibleTrainers = dbTrainers.filter(t => t.status === 'available');
+            if (eligibleTrainers.length === 0) {
+                selectEl.innerHTML = `<option value="">— No Available Trainers Found —</option>`;
+            } else {
+                eligibleTrainers.forEach((t, i) => {
+                    // Check if trainer matches domain level preference
+                    const isPrefLevel = t.level === 'both' || t.level === request.level;
+                    const compatibilityText = isPrefLevel ? '⚡ 100% Match' : '⚠️ 50% Match (Diff Pref)';
+                    selectEl.innerHTML += `<option value="${t.id}" ${i === 0 ? 'selected' : ''}>${t.name} (${t.className}) — ${compatibilityText}</option>`;
+                });
+            }
+
+            schedulerModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            runTimetableMatch();
+        }
+
+        function closeSchedulerModal() {
+            schedulerModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            activeSchedulingRequestId = null;
+            document.getElementById('sched-feedback').classList.add('hidden');
+        }
+
+        // Main algorithm: Compares slots array and matches overlap (2 per week)
+        function runTimetableMatch() {
+            const reqId = activeSchedulingRequestId;
+            const request = dbRequests.find(r => r.id === reqId);
+            const trainerId = document.getElementById('sched-trainer-select').value;
+            const trainer = dbTrainers.find(t => t.id === trainerId);
+
+            const matrixBody = document.getElementById('overlap-matrix-body');
+            matrixBody.innerHTML = '';
+            matchedSlotsList = [];
+
+            if (!request || !trainer) {
+                document.getElementById('sched-match-proposed').textContent = 'Please select a trainer to view match schedule.';
+                document.getElementById('sched-confirm-btn').disabled = true;
+                return;
+            }
+
+            // Find overlapping slots
+            const deptSlots = request.slots || [];
+            const trainerSlots = trainer.slots || [];
+            const overlapSlots = deptSlots.filter(s => trainerSlots.includes(s));
+
+            // Select first 2 slots for "2 classes in a week" scheduling rule
+            matchedSlotsList = overlapSlots.slice(0, 2);
+
+            // Render visual grid matrix of periods & days
+            periods.forEach((periodLabel, pIdx) => {
+                const pKey = 'P' + (pIdx + 1);
+                let rowHtml = `<td class="p-2 border font-bold text-slate-500 bg-slate-50/70 text-left">${periodLabel}</td>`;
+
+                days.forEach(day => {
+                    const slotKey = `${day}-${pKey}`;
+                    const isDeptFree = deptSlots.includes(slotKey);
+                    const isTrainerFree = trainerSlots.includes(slotKey);
+                    const isOverlap = overlapSlots.includes(slotKey);
+                    const isAssigned = matchedSlotsList.includes(slotKey);
+
+                    let cellStyle = "bg-red-50 text-red-500 border border-slate-100";
+                    let label = "Busy";
+
+                    if (isOverlap) {
+                        if (isAssigned) {
+                            cellStyle = "bg-emerald-500 text-white font-extrabold border-2 border-emerald-600 animate-pulse";
+                            label = "MATCHED";
+                        } else {
+                            cellStyle = "bg-emerald-100 text-emerald-800 font-bold border border-emerald-200";
+                            label = "Overlap";
+                        }
+                    } else if (isDeptFree) {
+                        cellStyle = "bg-blue-50 text-christ-blue border border-slate-100";
+                        label = "Class Free";
+                    } else if (isTrainerFree) {
+                        cellStyle = "bg-amber-50/70 text-amber-700 border border-slate-100";
+                        label = "Trainer Free";
+                    }
+
+                    rowHtml += `<td class="p-2 border text-[9px] ${cellStyle}">${label}</td>`;
+                });
+
+                matrixBody.innerHTML += `<tr class="border-b">${rowHtml}</tr>`;
+            });
+
+            // Update proposed schedule text
+            const proposedEl = document.getElementById('sched-match-proposed');
+            if (matchedSlotsList.length === 2) {
+                const slot1Parts = matchedSlotsList[0].split('-');
+                const slot2Parts = matchedSlotsList[1].split('-');
+                const slot1Label = `${slot1Parts[0]} Period ${slot1Parts[1].substring(1)}`;
+                const slot2Label = `${slot2Parts[0]} Period ${slot2Parts[1].substring(1)}`;
+                proposedEl.innerHTML = `Weekly Slots: <span class="bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200 font-extrabold text-emerald-800">${slot1Label}</span> &amp; <span class="bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200 font-extrabold text-emerald-800">${slot2Label}</span> (Verified overlap)`;
+                document.getElementById('sched-confirm-btn').disabled = false;
+            } else {
+                proposedEl.innerHTML = `<span class="text-red-500 font-bold">⚠️ Insufficient overlapping slots (Only found ${matchedSlotsList.length} of 2 required slots).</span>`;
+                document.getElementById('sched-confirm-btn').disabled = true;
+            }
+        }
+
+        function confirmScheduleSubmit() {
+            const reqId = activeSchedulingRequestId;
+            const trainerId = document.getElementById('sched-trainer-select').value;
+            const request = dbRequests.find(r => r.id === reqId);
+            const trainer = dbTrainers.find(t => t.id === trainerId);
+
+            if (!request || !trainer || matchedSlotsList.length < 2) return;
+
+            const feedbackEl = document.getElementById('sched-feedback');
+            feedbackEl.textContent = 'Allocating classroom resources & sending trainer briefing sheets...';
+            feedbackEl.classList.remove('hidden');
+
+            setTimeout(() => {
+                // Update databases
+                request.status = 'scheduled';
+                request.trainerId = trainerId;
+                request.scheduleSlots = [...matchedSlotsList];
+                trainer.status = 'assigned';
+
+                if (adminNotifications > 0) adminNotifications--; // decrement alerts
+
+                feedbackEl.textContent = '✓ Schedule successfully dispatched! Training sheet registered in logs.';
+                feedbackEl.className = 'p-3 rounded-lg text-xs font-semibold border text-center transition-all bg-emerald-50 text-emerald-800 border-emerald-250';
+
+                // Reload layout views
+                setSimulationRole(simRole);
+                showToast(`✓ CLASS DISPATCHED: ${request.className} successfully matched with ${trainer.name}.`);
+
+                setTimeout(() => {
+                    closeSchedulerModal();
+                }, 1200);
+            }, 1000);
+        }
+
+        // --- UTILS ---
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 bg-christ-dark text-white px-5 py-3.5 rounded-xl shadow-2xl border border-slate-800 z-50 text-xs font-semibold animate-bounce flex items-center gap-2 max-w-sm';
+            toast.innerHTML = `<span>⚡</span> <span>${message}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        // Initialize defaults on load
+        window.addEventListener('DOMContentLoaded', () => {
+            setSimulationRole('guest');
+        });
+    </script>
+</body>
+
+</html>
