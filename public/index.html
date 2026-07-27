@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Mission Tracker | Department of Computer Science | CHRIST</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        christ: {
+                            blue: '#2957A4',
+                            gold: '#D2AE6D',
+                            dark: '#201E1E',
+                            lightBg: '#F8FAFC',
+                            hoverBlue: '#1E4072'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-slate-50 text-christ-dark font-sans antialiased pb-12">
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="bg-christ-gold text-christ-dark py-2 px-4 text-center text-xs font-bold tracking-wider uppercase flex justify-between items-center max-w-full overflow-hidden">
+        <span class="mx-auto">🎓 Department of Computer Science - Peer-to-Peer Student Mentoring Initiative</span>
+        <div id="inspector-badge" class="hidden sm:flex items-center gap-1 text-[10px] bg-christ-dark text-white px-2 py-0.5 rounded cursor-pointer hover:bg-slate-800" onclick="toggleInspector()">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span>
+            <span>Live API & Event Inspector Active</span>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER NAVIGATION -->
+    <header id="main-header" class="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+
+                <!-- Brand Logo -->
+                <a href="#" class="flex flex-col">
+                    <span class="text-xl font-extrabold tracking-tight text-christ-blue">Digital Mission</span>
+                    <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">CHRIST (Deemed to be University)</span>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden lg:flex items-center gap-6 text-sm font-semibold">
+                    <a href="#about" class="text-slate-600 hover:text-christ-blue transition-colors">About</a>
+                    <a href="#departments" class="text-slate-600 hover:text-christ-blue transition-colors">Departments</a>
+                    <a href="#dashboard" class="text-slate-600 hover:text-christ-blue transition-colors">Dashboard</a>
+                    <a href="#matching" class="text-slate-600 hover:text-christ-blue transition-colors">Admin Matching</a>
+                </nav>
+
+                <!-- Desktop Action Buttons & Auth Info -->
+                <div class="hidden lg:flex items-center gap-2">
+                    <!-- Student Upload Timetable Button -->
+                    <button onclick="openStudentTimetableModal()" class="text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 px-3 py-2 rounded-xl font-bold text-xs transition-all active:scale-95 flex items-center gap-1">
+                        📅 Student Timetable
+                    </button>
+
+                    <!-- Department Add Class Button -->
+                    <button onclick="openDeptClassModal()" class="text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3 py-2 rounded-xl font-bold text-xs transition-all active:scale-95 flex items-center gap-1">
+                        🏫 Dept Class Timetable
+                    </button>
+
+                    <!-- Auth Header State -->
+                    <div id="auth-header-container">
+                        <button id="auth-login-btn" onclick="openLoginModal()" class="bg-christ-blue hover:bg-christ-hoverBlue text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-md active:scale-95 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 01-3-3h7a3 3 0 013 3v1"></path>
+                            </svg>
+                            <span>Sign In</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-600 hover:text-christ-blue focus:outline-none flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-200 py-4 px-6 space-y-3 shadow-inner">
+            <a href="#about" class="block text-slate-700 font-semibold hover:text-christ-blue" onclick="toggleMobileMenu()">About</a>
+            <a href="#departments" class="block text-slate-700 font-semibold hover:text-christ-blue" onclick="toggleMobileMenu()">Departments</a>
+            <a href="#dashboard" class="block text-slate-700 font-semibold hover:text-christ-blue" onclick="toggleMobileMenu()">Dashboard</a>
+            <a href="#matching" class="block text-slate-700 font-semibold hover:text-christ-blue" onclick="toggleMobileMenu()">Admin Matching</a>
+            <div class="pt-2 flex flex-col gap-2">
+                <button onclick="openStudentTimetableModal(); toggleMobileMenu();" class="w-full text-blue-700 bg-blue-50 border border-blue-200 py-2 rounded-lg font-bold text-xs">
+                    📅 Student Timetable
+                </button>
+                <button onclick="openDeptClassModal(); toggleMobileMenu();" class="w-full text-amber-800 bg-amber-50 border border-amber-200 py-2 rounded-lg font-bold text-xs">
+                    🏫 Dept Class Timetable
+                </button>
+                <div id="mobile-auth-container">
+                    <button onclick="openLoginModal(); toggleMobileMenu();" class="w-full bg-christ-blue text-white py-2 rounded-lg font-bold text-xs shadow">
+                        Sign In
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative bg-christ-lightBg py-16 lg:py-24 overflow-hidden border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100 border border-blue-200 text-christ-blue text-xs font-bold uppercase tracking-wider">
+                        🙌 Peer Mentoring: "By the Students, For the Students"
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-christ-dark leading-tight">
+                        Bridging Skill Gaps through <span class="text-christ-blue">Student Mentorship</span>
+                    </h1>
+                    <p class="text-base sm:text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        A peer-to-peer training framework connecting student trainers with department classes. Admin matches trainer availability with requested department timetables.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                        <button onclick="openStudentTimetableModal()" class="bg-christ-blue hover:bg-christ-hoverBlue text-white px-6 py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-blue-900/10 hover:scale-[1.02] active:scale-95 text-xs">
+                            📅 Student: Upload Timetable
+                        </button>
+                        <button onclick="openDeptClassModal()" class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3.5 rounded-xl font-bold transition-all shadow-md hover:scale-[1.02] active:scale-95 text-xs">
+                            🏫 Dept: Add Class Timetable
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hero Image Card -->
+                <div class="lg:col-span-5">
+                    <div id="hero-card" class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-white group hover:scale-[1.01] transition-all duration-300 cursor-pointer">
+                        <canvas id="hero-canvas-fallback" class="w-full h-64 bg-gradient-to-tr from-slate-900 to-christ-blue flex items-center justify-center text-white text-center p-4 rounded-xl"></canvas>
+                        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-christ-blue/95 via-christ-blue/60 to-transparent p-6 text-white">
+                            <span class="text-xs font-bold text-christ-gold tracking-widest uppercase">Department Mentorship</span>
+                            <h3 class="text-base font-bold">Timetable Matching & Peer Labs</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DASHBOARD & TIMETABLE MATCHING SECTION -->
+    <section id="dashboard" class="py-16 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-christ-blue">Platform Control</h2>
+                <h3 class="text-3xl font-extrabold text-christ-dark">Student & Department Dashboard</h3>
+                <p class="text-slate-500 text-sm">Interactive visualization of progress, video demo, canvas analytics, and location tracking.</p>
+            </div>
+
+            <div id="dashboard-container" class="bg-white border border-slate-200 rounded-2xl shadow-xl max-w-5xl mx-auto overflow-hidden">
+                <div class="bg-christ-dark text-white px-6 py-4 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-3">
+                        <div class="flex gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-red-500 block cursor-pointer"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500 block"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500 block cursor-pointer" onclick="openFullscreen()" title="Toggle Fullscreen"></span>
+                        </div>
+                        <span class="font-bold tracking-widest text-slate-400 uppercase">DIGITAL MISSION CONTROL PANEL</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="bg-emerald-500 text-white px-2.5 py-1 rounded-full font-bold uppercase tracking-widest text-[9px] animate-pulse">Express Server Connected</span>
+                        <button onclick="openFullscreen()" class="bg-slate-700 hover:bg-slate-600 text-white px-2 py-1 rounded text-[10px] font-bold">
+                            Fullscreen ⛶
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12">
+                    <!-- Left Sidebar Nav -->
+                    <div class="md:col-span-3 bg-slate-50 border-r border-slate-200 p-4 space-y-6">
+                        <div class="space-y-1">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase block tracking-wider">Actions</span>
+                            <button onclick="openStudentTimetableModal()" class="w-full text-left px-3 py-2 bg-blue-50 text-christ-blue rounded-lg font-bold text-xs flex items-center gap-2">📅 Upload Timetable</button>
+                            <button onclick="openDeptClassModal()" class="w-full text-left px-3 py-2 text-slate-600 rounded-lg hover:bg-slate-200 text-xs font-semibold flex items-center gap-2">🏫 Request Class Slot</button>
+                            <button onclick="notifyUser('Dashboard Test', 'Notification API working perfectly!')" class="w-full text-left px-3 py-2 text-slate-600 rounded-lg hover:bg-slate-200 text-xs font-semibold flex items-center gap-2">🔔 Push Notification</button>
+                        </div>
+                        <div class="space-y-2">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase block tracking-wider">System Roles</span>
+                            <div class="space-y-1">
+                                <div class="text-[11px] font-semibold text-slate-700 bg-white p-2 border rounded shadow-sm flex justify-between"><span>Admin</span><span class="text-blue-600">Central</span></div>
+                                <div class="text-[11px] font-semibold text-slate-700 bg-white p-2 border rounded shadow-sm flex justify-between"><span>Student</span><span class="text-emerald-600">Trainer</span></div>
+                                <div class="text-[11px] font-semibold text-slate-700 bg-white p-2 border rounded shadow-sm flex justify-between"><span>Department</span><span class="text-amber-600">Faculty</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Main Content -->
+                    <div class="md:col-span-9 p-6 sm:p-8 space-y-6">
+                        <!-- Dashboard Metric Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="border border-slate-200 p-4 rounded-xl space-y-1 bg-slate-50/50">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase block">Target Classes</span>
+                                <span id="dash-class-count" class="text-2xl font-black text-christ-blue">2 Classes</span>
+                            </div>
+                            <div class="border border-slate-200 p-4 rounded-xl space-y-1 bg-slate-50/50">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase block">Student Trainers</span>
+                                <span id="dash-trainer-count" class="text-2xl font-black text-emerald-600 font-mono">2 Registered</span>
+                            </div>
+                            <div class="border border-slate-200 p-4 rounded-xl space-y-1 bg-slate-50/50">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase block">Pending Assignments</span>
+                                <span id="dash-pending-count" class="text-2xl font-black text-amber-500 font-mono">2 Pending</span>
+                            </div>
+                        </div>
+
+                        <!-- HTML5 VIDEO API -->
+                        <div class="mt-6 p-4 bg-slate-50 border border-slate-200 rounded-xl text-center space-y-3">
+                            <div class="flex items-center justify-between border-b pb-2">
+                                <h4 class="font-bold text-christ-blue text-sm flex items-center gap-2">
+                                    <span>🎬 HTML5 Video API</span>
+                                    <span class="text-[10px] font-normal bg-blue-100 text-blue-800 px-2 py-0.5 rounded">Media Element API</span>
+                                </h4>
+                                <span id="video-status" class="text-xs text-slate-500 font-medium">Status: Ready</span>
+                            </div>
+                            <div class="relative max-w-md mx-auto overflow-hidden rounded-xl shadow border border-slate-300">
+                                <video id="trainingVideo" width="400" controls class="mx-auto w-full max-h-[220px] bg-black">
+                                    <source src="training.mp4" type="video/mp4">
+                                    Your browser does not support HTML5 Video.
+                                </video>
+                            </div>
+                            <div class="flex items-center justify-center gap-2 pt-1">
+                                <button onclick="playVideo()" class="bg-christ-blue hover:bg-christ-hoverBlue text-white px-3 py-1.5 rounded text-xs font-bold">▶ Play</button>
+                                <button onclick="pauseVideo()" class="bg-slate-600 hover:bg-slate-700 text-white px-3 py-1.5 rounded text-xs font-bold">⏸ Pause</button>
+                                <button onclick="restartVideo()" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded text-xs font-bold">↺ Restart</button>
+                            </div>
+                        </div>
+
+                        <!-- HTML5 CANVAS API -->
+                        <div class="mt-6 p-4 bg-slate-50 border border-slate-200 rounded-xl text-center space-y-3">
+                            <div class="flex items-center justify-between border-b pb-2">
+                                <h4 class="font-bold text-christ-blue text-sm flex items-center gap-2">
+                                    <span>📊 HTML5 Canvas API</span>
+                                    <span class="text-[10px] font-normal bg-purple-100 text-purple-800 px-2 py-0.5 rounded">2D Rendering Context</span>
+                                </h4>
+                                <span class="text-xs text-slate-500 font-medium">Session Attendance Chart</span>
+                            </div>
+                            <canvas id="analyticsCanvas" width="420" height="200" class="mx-auto border border-slate-200 rounded-lg bg-white shadow-sm w-full max-w-[420px]"></canvas>
+                            <div class="pt-1">
+                                <button onclick="drawChart()" class="bg-christ-blue hover:bg-christ-hoverBlue text-white px-4 py-1.5 rounded text-xs font-bold">🔄 Render Session Analytics</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADMIN TIMETABLE MATCHING & CLASS ASSIGNMENT SECTION -->
+    <section id="matching" class="py-16 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                <div>
+                    <span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase">Admin Control Panel</span>
+                    <h3 class="text-2xl font-extrabold text-christ-dark mt-1">Admin Timetable Matching & Trainer Assignment</h3>
+                    <p class="text-xs text-slate-500">Admin matches requested department class timetables with registered student trainers' available slots.</p>
+                </div>
+                <button onclick="autoMatchTimetables()" class="bg-purple-700 hover:bg-purple-800 text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-md transition-all active:scale-95 flex items-center gap-2">
+                    <span>⚡ Auto-Match & Assign Trainers</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Column 1: Department Requested Class Timetables -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <h4 class="font-extrabold text-sm text-christ-dark flex items-center gap-2">
+                            <span>🏫 Department Requested Classes</span>
+                            <span id="dept-class-count-badge" class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded font-bold">2 Slots</span>
+                        </h4>
+                        <button onclick="openDeptClassModal()" class="text-xs text-christ-blue font-bold hover:underline">+ Add Class</button>
+                    </div>
+
+                    <div id="admin-class-list" class="space-y-3">
+                        <!-- Loaded dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- Column 2: Registered Student Trainer Available Timetables -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <h4 class="font-extrabold text-sm text-christ-dark flex items-center gap-2">
+                            <span>📅 Registered Student Trainers</span>
+                            <span id="student-trainer-count-badge" class="bg-blue-100 text-blue-800 text-[10px] px-2 py-0.5 rounded font-bold">2 Available</span>
+                        </h4>
+                        <button onclick="openStudentTimetableModal()" class="text-xs text-christ-blue font-bold hover:underline">+ Upload Timetable</button>
+                    </div>
+
+                    <div id="admin-student-list" class="space-y-3">
+                        <!-- Loaded dynamically via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-christ-dark text-slate-400 py-12 text-xs sm:text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center md:text-left">
+                <div>
+                    <h4 class="text-white font-extrabold text-base">Digital Mission Tracker</h4>
+                    <p class="text-xs text-slate-500">Department of Computer Science, CHRIST (Deemed to be University)</p>
+                </div>
+                <div class="text-slate-300">
+                    <p class="font-semibold text-white">Central Campus Address</p>
+                    <p>Hosur Road, Bengaluru, Karnataka, India - 560029</p>
+                </div>
+                <div class="space-y-2 md:text-right">
+                    <p class="text-xs text-slate-500">&copy; 2026 Department of Computer Science, CHRIST. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ON-SCREEN TOAST CONTAINER -->
+    <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 1: STUDENT TIMETABLE UPLOAD MODAL (File Input / Drag & Drop API / Manual) -->
+    <!-- ========================================================================= -->
+    <div id="studentTimetableModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-md shadow-2xl relative border border-slate-100">
+            <button onclick="closeStudentTimetableModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg font-bold">✕</button>
+
+            <span class="bg-blue-100 text-christ-blue text-[10px] font-bold px-3 py-1 rounded-full uppercase">Student Role</span>
+            <h2 class="text-xl font-extrabold text-christ-dark mt-2 mb-1">Upload Student Trainer Timetable</h2>
+            <p class="text-xs text-slate-500 mb-4">Register your available slots for Admin matching.</p>
+
+            <form id="studentTimetableForm" onsubmit="handleStudentTimetableSubmit(event)">
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Student Full Name</label>
+                    <input type="text" id="tt-student-name" required placeholder="e.g. Amit Sharma" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs focus:ring-2 focus:ring-christ-blue focus:outline-none">
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Student Email (@christuniversity.in)</label>
+                    <input type="email" id="tt-student-email" required placeholder="student@christuniversity.in" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs focus:ring-2 focus:ring-christ-blue focus:outline-none">
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Available Free Time Slot</label>
+                    <select id="tt-available-slot" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs font-medium focus:ring-2 focus:ring-christ-blue">
+                        <option value="Monday 10:00 AM - 12:00 PM">Monday 10:00 AM - 12:00 PM</option>
+                        <option value="Wednesday 02:00 PM - 04:00 PM">Wednesday 02:00 PM - 04:00 PM</option>
+                        <option value="Friday 11:00 AM - 01:00 PM">Friday 11:00 AM - 01:00 PM</option>
+                    </select>
+                </div>
+
+                <!-- HTML5 Drag and Drop / File Input -->
+                <div class="mb-4">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Upload Timetable File (PDF / Image)</label>
+                    <div id="drop-zone" class="border-2 border-dashed border-slate-300 hover:border-christ-blue rounded-xl p-4 text-center cursor-pointer bg-slate-50 transition-colors">
+                        <span class="text-2xl block mb-1">📄</span>
+                        <span id="drop-zone-text" class="text-xs text-slate-600 font-semibold block">Drag & Drop Timetable file here or click to browse</span>
+                        <input type="file" id="tt-file-input" accept=".pdf,image/*" class="hidden">
+                    </div>
+                </div>
+
+                <button type="submit" class="bg-christ-blue hover:bg-christ-hoverBlue text-white w-full py-3 rounded-xl font-bold text-xs shadow-md transition-all active:scale-95">
+                    Submit Timetable to Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 2: DEPARTMENT CLASS TIMETABLE MODAL                                 -->
+    <!-- ========================================================================= -->
+    <div id="deptClassModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-md shadow-2xl relative border border-slate-100">
+            <button onclick="closeDeptClassModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg font-bold">✕</button>
+
+            <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase">Department Role</span>
+            <h2 class="text-xl font-extrabold text-christ-dark mt-2 mb-1">Request Class Workshop Timetable</h2>
+            <p class="text-xs text-slate-500 mb-4">Add your class time slot so Admin can assign a trainer.</p>
+
+            <form id="deptClassForm" onsubmit="handleDeptClassSubmit(event)">
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Department Name</label>
+                    <input type="text" id="cls-dept-name" required placeholder="e.g. School of Commerce" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs focus:ring-2 focus:ring-christ-blue focus:outline-none">
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Class / Batch Name</label>
+                    <input type="text" id="cls-class-name" required placeholder="e.g. 1st Year B.Com Regular" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs focus:ring-2 focus:ring-christ-blue focus:outline-none">
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Workshop Topic</label>
+                    <input type="text" id="cls-topic" required placeholder="e.g. Google Sheets & Data Analytics" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs focus:ring-2 focus:ring-christ-blue focus:outline-none">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Required Class Time Slot</label>
+                    <select id="cls-time-slot" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs font-medium focus:ring-2 focus:ring-christ-blue">
+                        <option value="Monday 10:00 AM - 12:00 PM">Monday 10:00 AM - 12:00 PM</option>
+                        <option value="Wednesday 02:00 PM - 04:00 PM">Wednesday 02:00 PM - 04:00 PM</option>
+                        <option value="Friday 11:00 AM - 01:00 PM">Friday 11:00 AM - 01:00 PM</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="bg-amber-600 hover:bg-amber-700 text-white w-full py-3 rounded-xl font-bold text-xs shadow-md transition-all active:scale-95">
+                    Submit Class Timetable Request
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 3: LOGIN / AUTH MODAL (Roles: Admin, Student, Department)          -->
+    <!-- ========================================================================= -->
+    <div id="loginModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-md shadow-2xl relative border border-slate-100">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg font-bold">✕</button>
+
+            <div class="text-center mb-5">
+                <span class="bg-blue-100 text-christ-blue text-[10px] font-bold px-3 py-1 rounded-full uppercase">Express.js Auth Integration</span>
+                <h2 class="text-2xl font-extrabold text-christ-dark mt-2">Sign In</h2>
+                <p class="text-xs text-slate-500 mt-1">Select account type and sign in.</p>
+            </div>
+
+            <!-- Preloaded Demo Accounts Hint -->
+            <div class="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl text-[11px] mb-4 space-y-1">
+                <p class="font-bold">🔑 Demo Accounts (Must end with @christuniversity.in):</p>
+                <p>• <b>Admin:</b> <code class="bg-amber-100 px-1 rounded">admin@christuniversity.in</code> / <code class="bg-amber-100 px-1 rounded">password123</code></p>
+                <p>• <b>Student:</b> <code class="bg-amber-100 px-1 rounded">student@christuniversity.in</code> / <code class="bg-amber-100 px-1 rounded">password123</code></p>
+                <p>• <b>Department:</b> <code class="bg-amber-100 px-1 rounded">department@christuniversity.in</code> / <code class="bg-amber-100 px-1 rounded">password123</code></p>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Email Address (@christuniversity.in)</label>
+                    <input type="email" id="login-email" required placeholder="student@christuniversity.in" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs focus:ring-2 focus:ring-christ-blue focus:outline-none">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
+                    <input type="password" id="login-password" required placeholder="••••••••" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs focus:ring-2 focus:ring-christ-blue focus:outline-none">
+                </div>
+
+                <div id="login-error-msg" class="text-xs text-red-600 bg-red-50 p-2 rounded border border-red-200 mb-3 hidden"></div>
+
+                <button type="submit" class="bg-christ-blue hover:bg-christ-hoverBlue text-white w-full py-3 rounded-xl font-bold text-xs shadow-md transition-all active:scale-95 flex items-center justify-center gap-2">
+                    <span>Login to Account</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- LIVE INSPECTOR DRAWER                                                     -->
+    <!-- Registers ALL DOM Events and HTML5 APIs in real-time                      -->
+    <!-- ========================================================================= -->
+    <div id="inspector-drawer" class="fixed bottom-0 left-0 right-0 bg-slate-900 text-white border-t-2 border-christ-gold shadow-2xl z-40 p-3 transition-transform duration-300 max-h-48 overflow-hidden">
+        <div class="max-w-7xl mx-auto flex items-center justify-between pb-2 border-b border-slate-700 text-xs">
+            <div class="flex items-center gap-2 font-bold text-christ-gold">
+                <span>🔍 HTML5 API & DOM Event Inspector Console</span>
+                <span class="text-[9px] bg-blue-900 text-blue-200 px-2 py-0.5 rounded font-mono">Live Monitoring All Events</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="clearInspectorLogs()" class="text-[10px] text-slate-400 hover:text-white underline">Clear Logs</button>
+                <button onclick="toggleInspector()" class="text-slate-400 hover:text-white text-xs font-bold">✕ Close</button>
+            </div>
+        </div>
+        <div id="inspector-logs" class="font-mono text-[11px] text-slate-300 space-y-1 mt-2 overflow-y-auto max-h-32">
+            <div class="text-emerald-400">[SYSTEM READY] Application initialized. Listening for all DOM Events & HTML5 APIs.</div>
+        </div>
+    </div>
+
+    <!-- MAIN APP JAVASCRIPT -->
+    <script src="js/app.js"></script>
+</body>
+
+</html>
